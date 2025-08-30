@@ -9,8 +9,18 @@
       font-family: 'Segoe UI', sans-serif;
       margin: 0;
       padding: 0;
-      background: url("IMG_20250827_163656.jpg") no-repeat center center fixed;
+      height: 100%;
+      overflow-x: hidden;
+    }
+
+    /* Parallax background */
+    .parallax {
+      background: url("https://preview.redd.it/mambo-v0-73hg0tx6ct4f1.jpeg?width=360&auto=webp&s=43a022bad3727cdcd625ed5a55fa82fec57b5004") 
+                  no-repeat center center;
       background-size: cover;
+      background-attachment: fixed;
+      min-height: 100vh;
+      width: 100%;
     }
 
     /* Glass effect */
@@ -21,7 +31,6 @@
       border: 1px solid rgba(255, 255, 255, 0.2);
       border-radius: 10px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-      animation: fadeIn 1s ease;
     }
 
     .menu-wrapper {
@@ -45,13 +54,17 @@
       background: rgba(0, 0, 0, 0.5);
       border-radius: 8px;
       font-size: 15px;
+      opacity: 0;
+      transform: translateY(20px);
       transition: 0.3s;
     }
 
     .menu-bar a:hover {
       background: dodgerblue;
+      box-shadow: 0 0 10px dodgerblue;
     }
 
+    /* Search */
     .search-box {
       text-align: center;
       margin: 20px 0;
@@ -59,40 +72,90 @@
 
     .content {
       max-width: 800px;
-      margin: auto;
+      margin: 40px auto;
       padding: 20px;
     }
 
     .content h2, .content p {
-      color: white; /* chữ sáng */
+      color: white;
       text-shadow: 0 1px 3px rgba(0,0,0,0.8);
     }
 
-    /* Fade-in effect */
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
+    /* Scroll animation (áp dụng chung) */
+    .hidden {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.8s ease-out;
+    }
+    .show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Menu xuất hiện lần lượt */
+    .menu-bar.show a {
+      animation: fadeUp 0.7s forwards;
+    }
+    .menu-bar.show a:nth-child(1) { animation-delay: 0.2s; }
+    .menu-bar.show a:nth-child(2) { animation-delay: 0.4s; }
+    .menu-bar.show a:nth-child(3) { animation-delay: 0.6s; }
+    .menu-bar.show a:nth-child(4) { animation-delay: 0.8s; }
+    .menu-bar.show a:nth-child(5) { animation-delay: 1s; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
 <body>
 
-  <div class="menu-wrapper glass">
-    <div class="menu-bar">
-      <a href="index.html">🏠 Trang chủ</a>
-      <a href="fandich.html">🈶 Fan Dịch</a>
+  <!-- Nền parallax -->
+  <div class="parallax">
+
+    <!-- Menu -->
+    <div class="menu-wrapper glass hidden">
+      <div class="menu-bar">
+        <a href="index.html">🏠 Trang chủ</a>
+        <a href="fandich.html">🈶 Fan Dịch</a>
+        <a href="#">📚 Light Novel</a>
+        <a href="#">✨ Khác</a>
+        <a href="#">ℹ️ Liên hệ</a>
+      </div>
+
+      <div class="search-box">
+        <script async src="https://cse.google.com/cse.js?cx=07e16b36ff38f44d8"></script>
+        <div class="gcse-search"></div>
+      </div>
     </div>
 
-    <div class="search-box">
-      <script async src="https://cse.google.com/cse.js?cx=07e16b36ff38f44d8"></script>
-      <div class="gcse-search"></div>
+    <!-- Nội dung -->
+    <div class="content glass hidden">
+      <h2>Chào mừng đến với Thư viện Hakor!</h2>
+      <p>Trang web lưu trữ light novel fan dịch, giao diện đơn giản dễ đọc.</p>
     </div>
+
   </div>
 
-  <div class="content glass">
-    <h2>Chào mừng đến với Thư viện Hakor!</h2>
-    <p>Trang web lưu trữ light novel fan dịch, giao diện đơn giản dễ đọc.</p>
-  </div>
+  <script>
+    // Scroll animation
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("show");
+
+          // Nếu là menu-bar thì thêm hiệu ứng cho từng nút
+          if (entry.target.querySelector('.menu-bar')) {
+            entry.target.querySelector('.menu-bar').classList.add("show");
+          }
+
+          observer.unobserve(entry.target); // chỉ chạy 1 lần
+        }
+      });
+    }, { threshold: 0.2 });
+
+    document.querySelectorAll('.hidden').forEach(el => observer.observe(el));
+  </script>
 
 </body>
 </html>
