@@ -9,7 +9,7 @@
       font-family: 'Segoe UI', sans-serif;
       margin: 0;
       padding: 0;
-      background: url("1629150294_8.jpg") no-repeat center center fixed;
+      background: url("IMG_20250827_163656.jpg") no-repeat center center fixed;
       background-size: cover;
     }
 
@@ -21,6 +21,7 @@
       border: 1px solid rgba(255, 255, 255, 0.2);
       border-radius: 10px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      animation: fadeIn 1s ease;
     }
 
     .menu-wrapper {
@@ -63,8 +64,14 @@
     }
 
     .content h2, .content p {
-      color: white; /* chữ sáng hơn vì nền tối */
+      color: white; /* chữ sáng */
       text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+    }
+
+    /* Fade-in effect */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
