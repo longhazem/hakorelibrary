@@ -11,6 +11,7 @@
       padding: 0;
       height: 100%;
       overflow-x: hidden;
+      transition: filter 0.3s ease;
     }
 
     /* Parallax background */
@@ -46,11 +47,6 @@
       text-shadow: 0 2px 5px rgba(0,0,0,0.8);
     }
 
-    /* Search */
-    .search-box {
-      margin-top: 15px;
-    }
-
     /* Menu */
     .menu-wrapper {
       padding: 15px 10px;
@@ -83,7 +79,7 @@
       transform: scale(1.05);
     }
 
-    /* Click glow effect */
+    /* Glow click effect */
     .menu-bar a::after {
       content: "";
       position: absolute;
@@ -114,20 +110,11 @@
     }
 
     /* Scroll animation */
-    .hidden {
-      opacity: 0;
-      transform: translateY(30px);
-      transition: all 0.8s ease-out;
-    }
-    .show {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    .hidden { opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out; }
+    .show { opacity: 1; transform: translateY(0); }
 
     /* Menu xuất hiện lần lượt */
-    .menu-bar.show a {
-      animation: fadeUp 0.7s forwards;
-    }
+    .menu-bar.show a { animation: fadeUp 0.7s forwards; }
     .menu-bar.show a:nth-child(1) { animation-delay: 0.2s; }
     .menu-bar.show a:nth-child(2) { animation-delay: 0.4s; }
     .menu-bar.show a:nth-child(3) { animation-delay: 0.6s; }
@@ -150,9 +137,7 @@
       z-index: 1000;
       transition: transform 0.75s linear;
     }
-    .settings-btn:hover {
-      transform: rotate(180deg);
-    }
+    .settings-btn:hover { transform: rotate(180deg); }
 
     /* Settings menu */
     .settings-menu {
@@ -191,7 +176,7 @@
       color: white;
       border: none;
       cursor: pointer;
-      font-size: 20px;
+      font-size: 24px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -260,11 +245,12 @@
   <button class="settings-btn">⚙️</button>
   <div class="settings-menu glass">
     <button id="toggleAnim">✨ Tắt/Bật animation</button>
+    <button id="toggleBrightness">💡 Chỉnh độ sáng</button>
   </div>
 
   <!-- Scroll buttons -->
-  <button class="scroll-btn scroll-up">🔼</button>
-  <button class="scroll-btn scroll-down">🔽</button>
+  <button class="scroll-btn scroll-up">▲</button>
+  <button class="scroll-btn scroll-down">▼</button>
 
   <!-- GIF Mambo -->
   <img class="mambo-gif" src="https://media.tenor.com/5Oxn0X7rSg0AAAAi/mambo-ume-usume-chibi-dance-anime.gif" alt="Mambo GIF">
@@ -297,6 +283,13 @@
       document.body.classList.toggle("no-anim");
     });
 
+    // Brightness toggle
+    let dark = false;
+    document.getElementById("toggleBrightness").addEventListener("click", () => {
+      dark = !dark;
+      document.body.style.filter = dark ? "brightness(0.6)" : "brightness(1)";
+    });
+
     // Scroll up/down
     document.querySelector(".scroll-up").addEventListener("click", () => {
       window.scrollTo({ top: 0, behavior: "smooth" });
@@ -307,14 +300,14 @@
 
     // Glow effect on menu buttons
     document.querySelectorAll(".menu-bar a").forEach(btn => {
-      btn.addEventListener("click", function(e) {
+      btn.addEventListener("click", function() {
         this.classList.remove("animate");
-        void this.offsetWidth; // restart animation
+        void this.offsetWidth;
         this.classList.add("animate");
       });
     });
 
-    // Firefly click effect (purple)
+    // Firefly click effect
     document.addEventListener("click", (e) => {
       if (e.target.closest(".settings-btn, .settings-menu, .scroll-btn, .menu-bar a")) return;
       const firefly = document.createElement("div");
