@@ -4,296 +4,52 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Thư viện Hakor</title>
-  <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      margin: 0;
-      padding: 0;
-      background: #111;
-      color: white;
-      overflow-x: hidden;
-    }
-
-    /* Header */
-    .header {
-      text-align: center;
-      padding: 20px;
-    }
-
-    .header h1 {
-      margin: 0;
-      font-size: 28px;
-    }
-
-    /* Search box */
-    .search-box {
-      margin-top: 10px;
-    }
-
-    /* Menu */
-    .menu-bar {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      margin: 20px 0;
-    }
-
-    .menu-bar a {
-      color: white;
-      text-decoration: none;
-      padding: 10px 18px;
-      background: rgba(0, 0, 0, 0.5);
-      border-radius: 8px;
-      transition: 0.3s;
-    }
-
-    .menu-bar a:hover {
-      background: dodgerblue;
-      box-shadow: 0 0 10px dodgerblue;
-    }
-
-    /* Content */
-    .content {
-      max-width: 800px;
-      margin: 40px auto;
-      padding: 20px;
-      text-align: center;
-    }
-
-    /* Settings button */
-    .settings-btn {
-      position: fixed;
-      bottom: 30px;
-      right: 20px;
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      background: rgba(0,0,0,0.7);
-      color: white;
-      font-size: 22px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      cursor: pointer;
-      z-index: 1000;
-      transition: transform 0.75s linear;
-    }
-
-    .settings-btn.rotate {
-      transform: rotate(360deg);
-    }
-
-    /* Settings menu */
-    .settings-menu {
-      position: fixed;
-      bottom: 100px;
-      right: 20px;
-      background: rgba(0,0,0,0.8);
-      padding: 15px;
-      border-radius: 15px;
-      display: none;
-      flex-direction: column;
-      gap: 10px;
-      z-index: 999;
-    }
-
-    .settings-menu button {
-      padding: 10px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      background: rgba(255,255,255,0.1);
-      color: white;
-      transition: 0.3s;
-    }
-
-    .settings-menu button:hover {
-      background: dodgerblue;
-      box-shadow: 0 0 10px dodgerblue;
-    }
-
-    /* Scroll buttons */
-    .scroll-btn {
-      position: fixed;
-      right: 20px;
-      width: 45px;
-      height: 45px;
-      border-radius: 50%;
-      background: rgba(0,0,0,0.6);
-      color: white;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 20px;
-      cursor: pointer;
-      z-index: 999;
-      transition: 0.3s;
-    }
-
-    .scroll-btn:hover {
-      background: dodgerblue;
-      box-shadow: 0 0 10px dodgerblue;
-      transform: scale(1.1);
-    }
-
-    .scroll-btn.up {
-      bottom: 150px;
-    }
-
-    .scroll-btn.down {
-      bottom: 95px;
-    }
-
-    /* Firefly button effect */
-    .firefly {
-      position: absolute;
-      width: 8px;
-      height: 8px;
-      background: dodgerblue;
-      border-radius: 50%;
-      pointer-events: none;
-      animation: fireflyAnim 1s ease-out forwards;
-    }
-
-    @keyframes fireflyAnim {
-      from { transform: scale(1); opacity: 1; }
-      to { transform: scale(0) translateY(-30px); opacity: 0; }
-    }
-
-    /* Firefly tap effect */
-    .firefly-tap {
-      position: absolute;
-      width: 10px;
-      height: 10px;
-      background: #cc99ff;
-      border-radius: 50%;
-      pointer-events: none;
-      opacity: 0.8;
-      animation: fireflyTapAnim 1.2s ease-out forwards;
-    }
-
-    @keyframes fireflyTapAnim {
-      from { transform: scale(1) translate(0,0); opacity: 0.8; }
-      to { transform: scale(0.5) translate(var(--x), var(--y)); opacity: 0; }
-    }
-
-    /* Gif Mambo */
-    .mambo-gif {
-      position: fixed;
-      bottom: 20px;
-      left: 20px;
-      width: 80px;
-      height: 80px;
-      z-index: 1000;
-    }
-
-    /* Dark/Light mode */
-    body.light {
-      background: #f0f0f0;
-      color: black;
-    }
-    body.light .menu-bar a {
-      background: rgba(0,0,0,0.1);
-      color: black;
-    }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header class="header glass">
-    <h1>📖 Thư viện Hakor</h1>
-    <div class="search-box glass">
-      <script async src="https://cse.google.com/cse.js?cx=07e16b36ff38f44d8"></script>
-      <div class="gcse-search"></div>
+
+  <!-- Nền parallax -->
+  <div class="parallax">
+
+    <!-- Menu -->
+    <div class="menu-wrapper glass hidden">
+      <div class="menu-bar">
+        <a href="index.html">🏠 Trang chủ</a>
+        <a href="fandich.html">🈶 Fan Dịch</a>
+        <a href="#">📚 Light Novel</a>
+      </div>
+
+      <h2 class="title">Chào mừng đến với Thư viện Hakor!</h2>
+
+      <div class="search-box">
+        <script async src="https://cse.google.com/cse.js?cx=07e16b36ff38f44d8"></script>
+        <div class="gcse-search"></div>
+      </div>
     </div>
-  </header>
 
-  <div class="menu-bar">
-    <a href="index.html">🏠 Trang chủ</a>
-    <a href="fandich.html">🈶 Fan Dịch</a>
-    <a href="#">📚 Light Novel</a>
+    <!-- Nội dung -->
+    <div class="content glass hidden">
+      <p>Trang web lưu trữ light novel fan dịch, giao diện đơn giản dễ đọc.</p>
+    </div>
   </div>
 
-  <div class="content glass">
-    <h2>Xin chào!</h2>
-    <p>Trang web lưu trữ light novel fan dịch, giao diện đơn giản dễ đọc.</p>
+  <!-- Nút cài đặt -->
+  <div class="settings-btn">⚙️</div>
+  <div class="settings-menu glass">
+    <h3>Cài đặt</h3>
+    <label><input type="checkbox" id="toggle-dark"> Chế độ tối</label><br>
+    <label><input type="checkbox" id="toggle-anim" checked> Hiệu ứng animation</label>
   </div>
 
-  <!-- Scroll buttons -->
-  <div class="scroll-btn up" id="scrollUp">⬆️</div>
-  <div class="scroll-btn down" id="scrollDown">⬇️</div>
+  <!-- Nút lên/xuống -->
+  <button class="scroll-btn up">⬆️</button>
+  <button class="scroll-btn down">⬇️</button>
 
-  <!-- Settings -->
-  <div class="settings-btn" id="settingsBtn">⚙️</div>
-  <div class="settings-menu" id="settingsMenu">
-    <button id="toggleTheme">🌙 Chế độ tối/sáng</button>
-    <button id="toggleAnim">✨ Bật/tắt animation</button>
-  </div>
+  <!-- GIF trang trí -->
+  <img class="mambo-gif" src="mambo-ume-usume.gif" alt="Mambo chibi nhảy" />
+  <img class="mambo-spin" src="https://media.tenor.com/9qMfxwrqs9wAAAAi/mambo-spin-loop.gif" alt="Mambo spin loop" />
 
-  <!-- Mambo gif -->
-  <img class="mambo-gif" src="mambo-ume-usume.gif" alt="Mambo GIF">
-
-  <script>
-    // Settings toggle
-    const settingsBtn = document.getElementById("settingsBtn");
-    const settingsMenu = document.getElementById("settingsMenu");
-
-    settingsBtn.addEventListener("click", () => {
-      settingsBtn.classList.toggle("rotate");
-      settingsMenu.style.display =
-        settingsMenu.style.display === "flex" ? "none" : "flex";
-    });
-
-    // Scroll buttons
-    document.getElementById("scrollUp").addEventListener("click", () => {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    });
-
-    document.getElementById("scrollDown").addEventListener("click", () => {
-      window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
-    });
-
-    // Firefly effect for buttons
-    document.querySelectorAll("button, .menu-bar a, .settings-btn, .scroll-btn")
-      .forEach(el => {
-        el.addEventListener("click", e => {
-          const dot = document.createElement("span");
-          dot.classList.add("firefly");
-          dot.style.left = e.pageX + "px";
-          dot.style.top = e.pageY + "px";
-          document.body.appendChild(dot);
-          setTimeout(() => dot.remove(), 1000);
-        });
-      });
-
-    // Firefly tap effect anywhere
-    document.body.addEventListener("click", (e) => {
-      if (e.target.closest("button, .menu-bar a, .settings-btn, .scroll-btn")) return;
-      for (let i = 0; i < 4; i++) {
-        const dot = document.createElement("span");
-        dot.classList.add("firefly-tap");
-        dot.style.left = e.pageX + "px";
-        dot.style.top = e.pageY + "px";
-        const angle = Math.random() * 2 * Math.PI;
-        const distance = 40 + Math.random() * 40;
-        const x = Math.cos(angle) * distance + "px";
-        const y = Math.sin(angle) * distance + "px";
-        dot.style.setProperty("--x", x);
-        dot.style.setProperty("--y", y);
-        document.body.appendChild(dot);
-        setTimeout(() => dot.remove(), 1200);
-      }
-    });
-
-    // Toggle theme
-    document.getElementById("toggleTheme").addEventListener("click", () => {
-      document.body.classList.toggle("light");
-    });
-
-    // Toggle animation
-    document.getElementById("toggleAnim").addEventListener("click", () => {
-      document.body.classList.toggle("no-anim");
-    });
-  </script>
+  <script src="script.js"></script>
 </body>
   </html>
   
