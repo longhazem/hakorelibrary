@@ -74,6 +74,8 @@
       color: white;
       cursor: pointer;
       transition: 0.3s;
+      position: relative;
+      overflow: hidden;
     }
 
     .search-box button:hover {
@@ -221,7 +223,7 @@
       box-shadow: 0 0 10px dodgerblue;
     }
 
-    /* Hiệu ứng click đom đóm */
+    /* Hiệu ứng click đom đóm xanh (nút/menu) */
     .firefly {
       position: absolute;
       width: 12px;
@@ -236,6 +238,23 @@
     @keyframes fireflyAnim {
       from { transform: scale(0.5); opacity: 0.8; }
       to { transform: scale(3); opacity: 0; }
+    }
+
+    /* Đom đóm tím khi click nền */
+    .firefly-tap {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background: #cc99ff;
+      border-radius: 50%;
+      pointer-events: none;
+      opacity: 0.8;
+      animation: fireflyTapAnim 1.2s ease-out forwards;
+    }
+
+    @keyframes fireflyTapAnim {
+      from { transform: scale(1) translate(0,0); opacity: 0.8; }
+      to { transform: scale(0.5) translate(var(--x), var(--y)); opacity: 0; }
     }
   </style>
 </head>
@@ -312,7 +331,7 @@
       document.body.classList.toggle("no-anim");
     });
 
-    // Hiệu ứng đom đóm khi click
+    // Hiệu ứng đom đóm xanh khi click nút/menu
     function addFireflyEffect(e) {
       const btn = e.currentTarget;
       const circle = document.createElement("span");
@@ -328,6 +347,29 @@
 
     document.querySelectorAll("button, .menu-bar a").forEach(el => {
       el.addEventListener("click", addFireflyEffect);
+    });
+
+    // Hiệu ứng đom đóm tím khi click nền
+    document.body.addEventListener("click", (e) => {
+      if (e.target.closest("button, .menu-bar a, .settings-btn")) return;
+
+      for (let i = 0; i < 4; i++) {
+        const dot = document.createElement("span");
+        dot.classList.add("firefly-tap");
+
+        dot.style.left = e.pageX + "px";
+        dot.style.top = e.pageY + "px";
+
+        const angle = Math.random() * 2 * Math.PI;
+        const distance = 40 + Math.random() * 40;
+        const x = Math.cos(angle) * distance + "px";
+        const y = Math.sin(angle) * distance + "px";
+        dot.style.setProperty("--x", x);
+        dot.style.setProperty("--y", y);
+
+        document.body.appendChild(dot);
+        setTimeout(() => dot.remove(), 1200);
+      }
     });
   </script>
 </body>
