@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>📖 Thư viện Hakor</title>
+  <title>Thư viện Hakor</title>
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
@@ -16,7 +16,7 @@
     /* Parallax background */
     .parallax {
       background: url("https://preview.redd.it/mambo-v0-73hg0tx6ct4f1.jpeg?width=360&auto=webp&s=43a022bad3727cdcd625ed5a55fa82fec57b5004")
-                   no-repeat center center;
+                  no-repeat center center;
       background-size: cover;
       background-attachment: fixed;
       min-height: 100vh;
@@ -35,49 +35,20 @@
 
     /* Header */
     .header {
-      max-width: 800px;
-      margin: 20px auto;
-      padding: 20px;
       text-align: center;
-      animation: fadeZoom 1s ease forwards;
+      padding: 20px;
+      margin: 0 auto;
+      max-width: 900px;
     }
-
     .header h1 {
-      margin: 0 0 15px;
-      font-size: 28px;
+      margin: 0;
       color: white;
-      text-shadow: 0 2px 5px rgba(0,0,0,0.7);
+      text-shadow: 0 2px 5px rgba(0,0,0,0.8);
     }
 
-    /* Search box */
+    /* Search */
     .search-box {
-      display: flex;
-      justify-content: center;
-      gap: 8px;
-    }
-
-    .search-box input {
-      padding: 10px 12px;
-      border-radius: 8px;
-      border: none;
-      outline: none;
-      width: 60%;
-      max-width: 400px;
-    }
-
-    .search-box button {
-      padding: 10px 15px;
-      border: none;
-      border-radius: 8px;
-      background: dodgerblue;
-      color: white;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-
-    .search-box button:hover {
-      background: deepskyblue;
-      transform: scale(1.05);
+      margin-top: 15px;
     }
 
     /* Menu */
@@ -86,7 +57,6 @@
       margin: 20px auto;
       max-width: 800px;
     }
-
     .menu-bar {
       display: flex;
       flex-wrap: wrap;
@@ -94,7 +64,6 @@
       gap: 10px;
       margin-bottom: 15px;
     }
-
     .menu-bar a {
       color: white;
       text-decoration: none;
@@ -108,10 +77,40 @@
       position: relative;
       overflow: hidden;
     }
-
     .menu-bar a:hover {
       background: dodgerblue;
       box-shadow: 0 0 10px dodgerblue;
+      transform: scale(1.05);
+    }
+
+    /* Click glow effect */
+    .menu-bar a::after {
+      content: "";
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: rgba(0,191,255,0.8);
+      border-radius: 50%;
+      transform: scale(0);
+      pointer-events: none;
+    }
+    .menu-bar a.animate::after {
+      animation: glow-burst 0.6s forwards;
+    }
+    @keyframes glow-burst {
+      from { transform: scale(0); opacity: 1; }
+      to { transform: scale(8); opacity: 0; }
+    }
+
+    /* Nội dung */
+    .content {
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 20px;
+    }
+    .content h2, .content p {
+      color: white;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.8);
     }
 
     /* Scroll animation */
@@ -132,69 +131,56 @@
     .menu-bar.show a:nth-child(1) { animation-delay: 0.2s; }
     .menu-bar.show a:nth-child(2) { animation-delay: 0.4s; }
     .menu-bar.show a:nth-child(3) { animation-delay: 0.6s; }
-
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(20px); }
       to   { opacity: 1; transform: translateY(0); }
     }
 
-    @keyframes fadeZoom {
-      from { opacity: 0; transform: scale(0.95); }
-      to   { opacity: 1; transform: scale(1); }
-    }
-
     /* Settings button */
     .settings-btn {
       position: fixed;
-      bottom: 30px;
+      bottom: 20px;
       right: 20px;
-      background: rgba(0,0,0,0.7);
-      color: white;
-      border: none;
-      padding: 12px;
+      width: 50px;
+      height: 50px;
       border-radius: 50%;
+      background: rgba(0,0,0,0.6);
+      border: none;
       cursor: pointer;
-      font-size: 20px;
+      z-index: 1000;
       transition: transform 0.75s linear;
-      z-index: 999;
     }
-
-    .settings-btn.rotate {
+    .settings-btn:hover {
       transform: rotate(180deg);
     }
 
     /* Settings menu */
     .settings-menu {
       position: fixed;
-      bottom: 90px;
+      bottom: 80px;
       right: 20px;
-      background: rgba(0,0,0,0.8);
+      background: rgba(0,0,0,0.7);
       padding: 15px;
-      border-radius: 15px;
+      border-radius: 12px;
       display: none;
       flex-direction: column;
       gap: 10px;
       z-index: 999;
     }
-
     .settings-menu button {
       padding: 8px 12px;
       border: none;
-      border-radius: 10px;
-      background: #444;
-      color: white;
+      border-radius: 8px;
       cursor: pointer;
-      transition: 0.3s;
-      position: relative;
-      overflow: hidden;
+      background: rgba(255,255,255,0.2);
+      color: white;
     }
-
     .settings-menu button:hover {
       background: dodgerblue;
-      transform: scale(1.05);
+      box-shadow: 0 0 10px dodgerblue;
     }
 
-    /* Nút scroll lên/xuống */
+    /* Scroll buttons */
     .scroll-btn {
       position: fixed;
       right: 20px;
@@ -203,66 +189,42 @@
       border-radius: 50%;
       background: rgba(0,0,0,0.6);
       color: white;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 20px;
+      border: none;
       cursor: pointer;
-      z-index: 999;
-      transition: 0.3s;
+      font-size: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
     }
+    .scroll-up { bottom: 140px; }
+    .scroll-down { bottom: 200px; }
 
-    .scroll-btn:hover {
-      background: dodgerblue;
-      box-shadow: 0 0 10px dodgerblue;
-      transform: scale(1.1);
-    }
-
-    .scroll-btn.up {
-      bottom: 150px;
-    }
-
-    .scroll-btn.down {
-      bottom: 95px;
-    }
-
-    /* Firefly effects */
+    /* Firefly click effect */
     .firefly {
-      position: absolute;
-      width: 12px;
-      height: 12px;
-      background: dodgerblue;
-      border-radius: 50%;
-      pointer-events: none;
-      opacity: 0.8;
-      animation: fireflyAnim 1s ease-out forwards;
-    }
-
-    @keyframes fireflyAnim {
-      from { transform: scale(0.5); opacity: 0.8; }
-      to   { transform: scale(3); opacity: 0; }
-    }
-
-    .firefly-tap {
-      position: absolute;
+      position: fixed;
       width: 10px;
       height: 10px;
-      background: #cc99ff;
       border-radius: 50%;
       pointer-events: none;
-      opacity: 0.8;
-      animation: fireflyTapAnim 1.2s ease-out forwards;
+      animation: fly 1s ease-out forwards;
+      background: rgba(186,85,211,0.8);
+      box-shadow: 0 0 8px rgba(186,85,211,0.8);
+      z-index: 2000;
+    }
+    @keyframes fly {
+      from { transform: scale(1); opacity: 1; }
+      to { transform: scale(4); opacity: 0; }
     }
 
-    @keyframes fireflyTapAnim {
-      from { transform: scale(1) translate(0,0); opacity: 0.8; }
-      to   { transform: scale(0.5) translate(var(--x), var(--y)); opacity: 0; }
-    }
-
-    /* Dark mode */
-    body.dark {
-      background: #111;
-      color: #eee;
+    /* Mambo GIF */
+    .mambo-gif {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      width: 80px;
+      height: 80px;
+      z-index: 1000;
     }
   </style>
 </head>
@@ -270,11 +232,11 @@
 
   <div class="parallax">
     <!-- Header -->
-    <header class="glass header">
+    <header class="glass header hidden">
       <h1>📖 Thư viện Hakor</h1>
-      <div class="search-box">
-        <input type="text" placeholder="🔍 Tìm kiếm light novel..." />
-        <button>Tìm kiếm</button>
+      <div class="search-box glass">
+        <script async src="https://cse.google.com/cse.js?cx=07e16b36ff38f44d8"></script>
+        <div class="gcse-search"></div>
       </div>
     </header>
 
@@ -288,22 +250,24 @@
     </div>
 
     <!-- Nội dung -->
-    <div class="content glass hidden" style="max-width:800px; margin:40px auto; padding:20px;">
+    <div class="content glass hidden">
       <h2>Xin chào!</h2>
       <p>Trang web lưu trữ light novel fan dịch, giao diện đơn giản dễ đọc.</p>
     </div>
   </div>
 
-  <!-- Scroll buttons -->
-  <div class="scroll-btn up" id="scrollUp">⬆️</div>
-  <div class="scroll-btn down" id="scrollDown">⬇️</div>
-
   <!-- Settings -->
-  <button class="settings-btn" id="settingsBtn">⚙️</button>
-  <div class="settings-menu" id="settingsMenu">
-    <button id="toggleDark">🌙 Chế độ tối/sáng</button>
-    <button id="toggleAnim">✨ Bật/tắt animation</button>
+  <button class="settings-btn">⚙️</button>
+  <div class="settings-menu glass">
+    <button id="toggleAnim">✨ Tắt/Bật animation</button>
   </div>
+
+  <!-- Scroll buttons -->
+  <button class="scroll-btn scroll-up">🔼</button>
+  <button class="scroll-btn scroll-down">🔽</button>
+
+  <!-- GIF Mambo -->
+  <img class="mambo-gif" src="https://media.tenor.com/5Oxn0X7rSg0AAAAi/mambo-ume-usume-chibi-dance-anime.gif" alt="Mambo GIF">
 
   <script>
     // Scroll animation
@@ -320,65 +284,47 @@
     }, { threshold: 0.2 });
     document.querySelectorAll('.hidden').forEach(el => observer.observe(el));
 
-    // Settings
-    const settingsBtn = document.getElementById("settingsBtn");
-    const settingsMenu = document.getElementById("settingsMenu");
-
+    // Settings toggle
+    const settingsBtn = document.querySelector(".settings-btn");
+    const settingsMenu = document.querySelector(".settings-menu");
     settingsBtn.addEventListener("click", () => {
-      settingsBtn.classList.toggle("rotate");
-      settingsMenu.style.display = settingsMenu.style.display === "flex" ? "none" : "flex";
+      settingsMenu.style.display =
+        settingsMenu.style.display === "flex" ? "none" : "flex";
     });
 
-    document.getElementById("toggleDark").addEventListener("click", () => {
-      document.body.classList.toggle("dark");
-    });
-
+    // Toggle animation
     document.getElementById("toggleAnim").addEventListener("click", () => {
       document.body.classList.toggle("no-anim");
     });
 
-    // Firefly xanh nước khi click nút
-    function addFireflyEffect(e) {
-      const btn = e.currentTarget;
-      const circle = document.createElement("span");
-      circle.classList.add("firefly");
-      const rect = btn.getBoundingClientRect();
-      circle.style.left = (e.clientX - rect.left - 6) + "px";
-      circle.style.top = (e.clientY - rect.top - 6) + "px";
-      btn.appendChild(circle);
-      setTimeout(() => circle.remove(), 1000);
-    }
-    document.querySelectorAll("button, .menu-bar a").forEach(el => {
-      el.addEventListener("click", addFireflyEffect);
-    });
-
-    // Firefly tím khi click nền
-    document.body.addEventListener("click", (e) => {
-      if (e.target.closest("button, .menu-bar a, .settings-btn")) return;
-      for (let i = 0; i < 4; i++) {
-        const dot = document.createElement("span");
-        dot.classList.add("firefly-tap");
-        dot.style.left = e.pageX + "px";
-        dot.style.top = e.pageY + "px";
-        const angle = Math.random() * 2 * Math.PI;
-        const distance = 40 + Math.random() * 40;
-        const x = Math.cos(angle) * distance + "px";
-        const y = Math.sin(angle) * distance + "px";
-        dot.style.setProperty("--x", x);
-        dot.style.setProperty("--y", y);
-        document.body.appendChild(dot);
-        setTimeout(() => dot.remove(), 1200);
-      }
-    });
-
-    // Nút lên/xuống
-    document.getElementById("scrollUp").addEventListener("click", () => {
+    // Scroll up/down
+    document.querySelector(".scroll-up").addEventListener("click", () => {
       window.scrollTo({ top: 0, behavior: "smooth" });
     });
-    document.getElementById("scrollDown").addEventListener("click", () => {
+    document.querySelector(".scroll-down").addEventListener("click", () => {
       window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+    });
+
+    // Glow effect on menu buttons
+    document.querySelectorAll(".menu-bar a").forEach(btn => {
+      btn.addEventListener("click", function(e) {
+        this.classList.remove("animate");
+        void this.offsetWidth; // restart animation
+        this.classList.add("animate");
+      });
+    });
+
+    // Firefly click effect (purple)
+    document.addEventListener("click", (e) => {
+      if (e.target.closest(".settings-btn, .settings-menu, .scroll-btn, .menu-bar a")) return;
+      const firefly = document.createElement("div");
+      firefly.className = "firefly";
+      firefly.style.left = `${e.clientX}px`;
+      firefly.style.top = `${e.clientY}px`;
+      document.body.appendChild(firefly);
+      setTimeout(() => firefly.remove(), 1000);
     });
   </script>
 </body>
   </html>
-    
+  
