@@ -9,157 +9,104 @@
       font-family: 'Segoe UI', sans-serif;
       margin: 0;
       padding: 0;
-      height: 100%;
+      background: #111;
+      color: white;
       overflow-x: hidden;
-      transition: filter 0.3s ease;
-    }
-
-    /* Parallax background */
-    .parallax {
-      background: url("https://preview.redd.it/mambo-v0-73hg0tx6ct4f1.jpeg?width=360&auto=webp&s=43a022bad3727cdcd625ed5a55fa82fec57b5004")
-                  no-repeat center center;
-      background-size: cover;
-      background-attachment: fixed;
-      min-height: 100vh;
-      width: 100%;
-    }
-
-    /* Glass effect */
-    .glass {
-      background: rgba(255, 255, 255, 0.15);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
     }
 
     /* Header */
     .header {
       text-align: center;
       padding: 20px;
-      margin: 0 auto;
-      max-width: 900px;
     }
+
     .header h1 {
       margin: 0;
-      color: white;
-      text-shadow: 0 2px 5px rgba(0,0,0,0.8);
+      font-size: 28px;
+    }
+
+    /* Search box */
+    .search-box {
+      margin-top: 10px;
     }
 
     /* Menu */
-    .menu-wrapper {
-      padding: 15px 10px;
-      margin: 20px auto;
-      max-width: 800px;
-    }
     .menu-bar {
       display: flex;
-      flex-wrap: wrap;
       justify-content: center;
       gap: 10px;
-      margin-bottom: 15px;
+      margin: 20px 0;
     }
+
     .menu-bar a {
       color: white;
       text-decoration: none;
       padding: 10px 18px;
       background: rgba(0, 0, 0, 0.5);
       border-radius: 8px;
-      font-size: 15px;
-      opacity: 0;
-      transform: translateY(20px);
       transition: 0.3s;
-      position: relative;
-      overflow: hidden;
     }
+
     .menu-bar a:hover {
       background: dodgerblue;
       box-shadow: 0 0 10px dodgerblue;
-      transform: scale(1.05);
     }
 
-    /* Glow click effect */
-    .menu-bar a::after {
-      content: "";
-      position: absolute;
-      width: 20px;
-      height: 20px;
-      background: rgba(0,191,255,0.8);
-      border-radius: 50%;
-      transform: scale(0);
-      pointer-events: none;
-    }
-    .menu-bar a.animate::after {
-      animation: glow-burst 0.6s forwards;
-    }
-    @keyframes glow-burst {
-      from { transform: scale(0); opacity: 1; }
-      to { transform: scale(8); opacity: 0; }
-    }
-
-    /* Nội dung */
+    /* Content */
     .content {
       max-width: 800px;
       margin: 40px auto;
       padding: 20px;
-    }
-    .content h2, .content p {
-      color: white;
-      text-shadow: 0 1px 3px rgba(0,0,0,0.8);
-    }
-
-    /* Scroll animation */
-    .hidden { opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out; }
-    .show { opacity: 1; transform: translateY(0); }
-
-    /* Menu xuất hiện lần lượt */
-    .menu-bar.show a { animation: fadeUp 0.7s forwards; }
-    .menu-bar.show a:nth-child(1) { animation-delay: 0.2s; }
-    .menu-bar.show a:nth-child(2) { animation-delay: 0.4s; }
-    .menu-bar.show a:nth-child(3) { animation-delay: 0.6s; }
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to   { opacity: 1; transform: translateY(0); }
+      text-align: center;
     }
 
     /* Settings button */
     .settings-btn {
       position: fixed;
-      bottom: 20px;
+      bottom: 30px;
       right: 20px;
       width: 50px;
       height: 50px;
       border-radius: 50%;
-      background: rgba(0,0,0,0.6);
-      border: none;
+      background: rgba(0,0,0,0.7);
+      color: white;
+      font-size: 22px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       cursor: pointer;
       z-index: 1000;
       transition: transform 0.75s linear;
     }
-    .settings-btn:hover { transform: rotate(180deg); }
+
+    .settings-btn.rotate {
+      transform: rotate(360deg);
+    }
 
     /* Settings menu */
     .settings-menu {
       position: fixed;
-      bottom: 80px;
+      bottom: 100px;
       right: 20px;
-      background: rgba(0,0,0,0.7);
+      background: rgba(0,0,0,0.8);
       padding: 15px;
-      border-radius: 12px;
+      border-radius: 15px;
       display: none;
       flex-direction: column;
       gap: 10px;
       z-index: 999;
     }
+
     .settings-menu button {
-      padding: 8px 12px;
+      padding: 10px;
       border: none;
       border-radius: 8px;
       cursor: pointer;
-      background: rgba(255,255,255,0.2);
+      background: rgba(255,255,255,0.1);
       color: white;
+      transition: 0.3s;
     }
+
     .settings-menu button:hover {
       background: dodgerblue;
       box-shadow: 0 0 10px dodgerblue;
@@ -174,35 +121,63 @@
       border-radius: 50%;
       background: rgba(0,0,0,0.6);
       color: white;
-      border: none;
-      cursor: pointer;
-      font-size: 24px;
       display: flex;
-      align-items: center;
       justify-content: center;
-      z-index: 1000;
+      align-items: center;
+      font-size: 20px;
+      cursor: pointer;
+      z-index: 999;
+      transition: 0.3s;
     }
-    .scroll-up { bottom: 140px; }
-    .scroll-down { bottom: 200px; }
 
-    /* Firefly click effect */
+    .scroll-btn:hover {
+      background: dodgerblue;
+      box-shadow: 0 0 10px dodgerblue;
+      transform: scale(1.1);
+    }
+
+    .scroll-btn.up {
+      bottom: 150px;
+    }
+
+    .scroll-btn.down {
+      bottom: 95px;
+    }
+
+    /* Firefly button effect */
     .firefly {
-      position: fixed;
-      width: 10px;
-      height: 10px;
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      background: dodgerblue;
       border-radius: 50%;
       pointer-events: none;
-      animation: fly 1s ease-out forwards;
-      background: rgba(186,85,211,0.8);
-      box-shadow: 0 0 8px rgba(186,85,211,0.8);
-      z-index: 2000;
-    }
-    @keyframes fly {
-      from { transform: scale(1); opacity: 1; }
-      to { transform: scale(4); opacity: 0; }
+      animation: fireflyAnim 1s ease-out forwards;
     }
 
-    /* Mambo GIF */
+    @keyframes fireflyAnim {
+      from { transform: scale(1); opacity: 1; }
+      to { transform: scale(0) translateY(-30px); opacity: 0; }
+    }
+
+    /* Firefly tap effect */
+    .firefly-tap {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background: #cc99ff;
+      border-radius: 50%;
+      pointer-events: none;
+      opacity: 0.8;
+      animation: fireflyTapAnim 1.2s ease-out forwards;
+    }
+
+    @keyframes fireflyTapAnim {
+      from { transform: scale(1) translate(0,0); opacity: 0.8; }
+      to { transform: scale(0.5) translate(var(--x), var(--y)); opacity: 0; }
+    }
+
+    /* Gif Mambo */
     .mambo-gif {
       position: fixed;
       bottom: 20px;
@@ -211,111 +186,112 @@
       height: 80px;
       z-index: 1000;
     }
+
+    /* Dark/Light mode */
+    body.light {
+      background: #f0f0f0;
+      color: black;
+    }
+    body.light .menu-bar a {
+      background: rgba(0,0,0,0.1);
+      color: black;
+    }
   </style>
 </head>
 <body>
-
-  <div class="parallax">
-    <!-- Header -->
-    <header class="glass header hidden">
-      <h1>📖 Thư viện Hakor</h1>
-      <div class="search-box glass">
-        <script async src="https://cse.google.com/cse.js?cx=07e16b36ff38f44d8"></script>
-        <div class="gcse-search"></div>
-      </div>
-    </header>
-
-    <!-- Menu -->
-    <div class="menu-wrapper glass hidden">
-      <div class="menu-bar">
-        <a href="index.html">🏠 Trang chủ</a>
-        <a href="fandich.html">🈶 Fan Dịch</a>
-        <a href="#">📚 Light Novel</a>
-      </div>
+  <header class="header glass">
+    <h1>📖 Thư viện Hakor</h1>
+    <div class="search-box glass">
+      <script async src="https://cse.google.com/cse.js?cx=07e16b36ff38f44d8"></script>
+      <div class="gcse-search"></div>
     </div>
+  </header>
 
-    <!-- Nội dung -->
-    <div class="content glass hidden">
-      <h2>Xin chào!</h2>
-      <p>Trang web lưu trữ light novel fan dịch, giao diện đơn giản dễ đọc.</p>
-    </div>
+  <div class="menu-bar">
+    <a href="index.html">🏠 Trang chủ</a>
+    <a href="fandich.html">🈶 Fan Dịch</a>
+    <a href="#">📚 Light Novel</a>
   </div>
 
-  <!-- Settings -->
-  <button class="settings-btn">⚙️</button>
-  <div class="settings-menu glass">
-    <button id="toggleAnim">✨ Tắt/Bật animation</button>
-    <button id="toggleBrightness">💡 Chỉnh độ sáng</button>
+  <div class="content glass">
+    <h2>Xin chào!</h2>
+    <p>Trang web lưu trữ light novel fan dịch, giao diện đơn giản dễ đọc.</p>
   </div>
 
   <!-- Scroll buttons -->
-  <button class="scroll-btn scroll-up">▲</button>
-  <button class="scroll-btn scroll-down">▼</button>
+  <div class="scroll-btn up" id="scrollUp">⬆️</div>
+  <div class="scroll-btn down" id="scrollDown">⬇️</div>
 
-  <!-- GIF Mambo -->
-  <img class="mambo-gif" src="https://media.tenor.com/5Oxn0X7rSg0AAAAi/mambo-ume-usume-chibi-dance-anime.gif" alt="Mambo GIF">
+  <!-- Settings -->
+  <div class="settings-btn" id="settingsBtn">⚙️</div>
+  <div class="settings-menu" id="settingsMenu">
+    <button id="toggleTheme">🌙 Chế độ tối/sáng</button>
+    <button id="toggleAnim">✨ Bật/tắt animation</button>
+  </div>
+
+  <!-- Mambo gif -->
+  <img class="mambo-gif" src="mambo-ume-usume.gif" alt="Mambo GIF">
 
   <script>
-    // Scroll animation
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("show");
-          if (entry.target.querySelector('.menu-bar')) {
-            entry.target.querySelector('.menu-bar').classList.add("show");
-          }
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.2 });
-    document.querySelectorAll('.hidden').forEach(el => observer.observe(el));
-
     // Settings toggle
-    const settingsBtn = document.querySelector(".settings-btn");
-    const settingsMenu = document.querySelector(".settings-menu");
+    const settingsBtn = document.getElementById("settingsBtn");
+    const settingsMenu = document.getElementById("settingsMenu");
+
     settingsBtn.addEventListener("click", () => {
+      settingsBtn.classList.toggle("rotate");
       settingsMenu.style.display =
         settingsMenu.style.display === "flex" ? "none" : "flex";
+    });
+
+    // Scroll buttons
+    document.getElementById("scrollUp").addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    document.getElementById("scrollDown").addEventListener("click", () => {
+      window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+    });
+
+    // Firefly effect for buttons
+    document.querySelectorAll("button, .menu-bar a, .settings-btn, .scroll-btn")
+      .forEach(el => {
+        el.addEventListener("click", e => {
+          const dot = document.createElement("span");
+          dot.classList.add("firefly");
+          dot.style.left = e.pageX + "px";
+          dot.style.top = e.pageY + "px";
+          document.body.appendChild(dot);
+          setTimeout(() => dot.remove(), 1000);
+        });
+      });
+
+    // Firefly tap effect anywhere
+    document.body.addEventListener("click", (e) => {
+      if (e.target.closest("button, .menu-bar a, .settings-btn, .scroll-btn")) return;
+      for (let i = 0; i < 4; i++) {
+        const dot = document.createElement("span");
+        dot.classList.add("firefly-tap");
+        dot.style.left = e.pageX + "px";
+        dot.style.top = e.pageY + "px";
+        const angle = Math.random() * 2 * Math.PI;
+        const distance = 40 + Math.random() * 40;
+        const x = Math.cos(angle) * distance + "px";
+        const y = Math.sin(angle) * distance + "px";
+        dot.style.setProperty("--x", x);
+        dot.style.setProperty("--y", y);
+        document.body.appendChild(dot);
+        setTimeout(() => dot.remove(), 1200);
+      }
+    });
+
+    // Toggle theme
+    document.getElementById("toggleTheme").addEventListener("click", () => {
+      document.body.classList.toggle("light");
     });
 
     // Toggle animation
     document.getElementById("toggleAnim").addEventListener("click", () => {
       document.body.classList.toggle("no-anim");
-    });
-
-    // Brightness toggle
-    let dark = false;
-    document.getElementById("toggleBrightness").addEventListener("click", () => {
-      dark = !dark;
-      document.body.style.filter = dark ? "brightness(0.6)" : "brightness(1)";
-    });
-
-    // Scroll up/down
-    document.querySelector(".scroll-up").addEventListener("click", () => {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    });
-    document.querySelector(".scroll-down").addEventListener("click", () => {
-      window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
-    });
-
-    // Glow effect on menu buttons
-    document.querySelectorAll(".menu-bar a").forEach(btn => {
-      btn.addEventListener("click", function() {
-        this.classList.remove("animate");
-        void this.offsetWidth;
-        this.classList.add("animate");
-      });
-    });
-
-    // Firefly click effect
-    document.addEventListener("click", (e) => {
-      if (e.target.closest(".settings-btn, .settings-menu, .scroll-btn, .menu-bar a")) return;
-      const firefly = document.createElement("div");
-      firefly.className = "firefly";
-      firefly.style.left = `${e.clientX}px`;
-      firefly.style.top = `${e.clientY}px`;
-      document.body.appendChild(firefly);
-      setTimeout(() => firefly.remove(), 1000);
     });
   </script>
 </body>
