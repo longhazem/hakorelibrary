@@ -17,8 +17,7 @@
 
     /* Parallax background */
     .parallax {
-      background: url("https://preview.redd.it/mambo-v0-73hg0tx6ct4f1.jpeg?width=360&auto=webp&s=43a022bad3727cdcd625ed5a55fa82fec57b5004") 
-                  no-repeat center center;
+      background: url("e4b88be78198e9a785-2.jpg") no-repeat center center;
       background-size: cover;
       background-attachment: fixed;
       min-height: 100vh;
@@ -131,10 +130,10 @@
       background: rgba(0,0,0,0.6);
       border: none;
       border-radius: 50%;
-      padding: 12px;
+      padding: 18px; /* to hơn */
       cursor: pointer;
       color: white;
-      font-size: 22px;
+      font-size: 28px; /* to hơn */
       transition: transform 0.75s linear;
       z-index: 999;
     }
@@ -146,7 +145,7 @@
     /* Panel cài đặt */
     .settings-panel {
       position: fixed;
-      bottom: 70px;
+      bottom: 90px;
       right: 20px;
       background: rgba(20,20,20,0.9);
       padding: 15px;
@@ -165,38 +164,47 @@
       background: rgba(0,0,0,0.6);
       border: none;
       border-radius: 50%;
-      padding: 12px;
+      padding: 18px; /* to hơn */
       cursor: pointer;
       color: white;
-      font-size: 20px;
+      font-size: 24px; /* to hơn */
       z-index: 998;
     }
-    .scroll-top { bottom: 80px; }
-    .scroll-down { bottom: 140px; }
+    .scroll-top { bottom: 160px; }
+    .scroll-down { bottom: 230px; }
 
     /* Gif Matikane Tannhauser */
     .mambo-gif {
       position: fixed;
       bottom: 20px;
       left: 20px;
-      width: 120px;
+      width: 140px;
       z-index: 997;
+      animation: floaty 3s ease-in-out infinite;
+      filter: drop-shadow(0 0 15px rgba(128,0,255,0.8));
+      cursor: pointer;
+    }
+    @keyframes floaty {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+      100% { transform: translateY(0px); }
     }
 
     /* Firefly effect */
     .firefly {
       position: fixed;
       border-radius: 50%;
-      width: 10px;
-      height: 10px;
-      background: rgba(200,100,255,0.8);
+      width: 14px;
+      height: 14px;
+      background: radial-gradient(circle, rgba(200,100,255,1) 0%, rgba(150,50,200,0) 70%);
       pointer-events: none;
-      animation: fly 1.5s linear forwards;
+      animation: fly 1.8s linear forwards;
       z-index: 1000;
+      box-shadow: 0 0 20px rgba(200,100,255,0.9);
     }
     @keyframes fly {
-      0% { transform: scale(0.5); opacity: 1; }
-      100% { transform: translateY(-80px) scale(0); opacity: 0; }
+      0% { transform: scale(0.6); opacity: 1; }
+      100% { transform: translateY(-100px) scale(0); opacity: 0; }
     }
 
     /* Dark mode */
@@ -248,8 +256,12 @@
 
   <!-- Gif Matikane -->
   <img class="mambo-gif" 
+       id="matikaneGif"
        src="https://media.tenor.com/4thzRUVt7eQAAAAi/pretty-derby-matikane-tannhauser-anime-girl.gif" 
        alt="Matikane chibi nhảy">
+
+  <!-- Nhạc -->
+  <audio id="matikaneAudio" src="Umapyoi Densetsu - Uma Musume Pretty Derby (128).mp3"></audio>
 
   <script>
     // Scroll animation
@@ -292,15 +304,30 @@
       window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
     });
 
-    // Firefly click effect
+    // Firefly click effect (nhiều đom đóm)
     document.addEventListener("click", (e) => {
-      const firefly = document.createElement("div");
-      firefly.className = "firefly";
-      firefly.style.left = `${e.pageX}px`;
-      firefly.style.top = `${e.pageY}px`;
-      document.body.appendChild(firefly);
-      setTimeout(() => firefly.remove(), 1500);
+      for (let i = 0; i < 5; i++) {
+        const firefly = document.createElement("div");
+        firefly.className = "firefly";
+        firefly.style.left = `${e.pageX + (Math.random() * 40 - 20)}px`;
+        firefly.style.top = `${e.pageY + (Math.random() * 40 - 20)}px`;
+        document.body.appendChild(firefly);
+        setTimeout(() => firefly.remove(), 1800);
+      }
+    });
+
+    // Matikane gif click => phát nhạc
+    const matikaneGif = document.getElementById("matikaneGif");
+    const matikaneAudio = document.getElementById("matikaneAudio");
+
+    matikaneGif.addEventListener("click", () => {
+      if (matikaneAudio.paused) {
+        matikaneAudio.play();
+      } else {
+        matikaneAudio.pause();
+      }
     });
   </script>
 </body>
-</html>
+    </html>
+    
