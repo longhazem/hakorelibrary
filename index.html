@@ -15,7 +15,7 @@
       color: white;
     }
 
-    /* Nền Parallax */
+    /* Parallax background */
     .parallax {
       background: url("e4b88be78198e9a785-2.jpg") no-repeat center center;
       background-size: cover;
@@ -35,7 +35,7 @@
       padding: 15px;
     }
 
-    /* Menu wrapper */
+    /* Menu */
     .menu-wrapper {
       padding: 10px;
       margin: 20px auto;
@@ -57,7 +57,7 @@
       padding: 12px 22px;
       background: rgba(0, 0, 0, 0.5);
       border-radius: 8px;
-      font-size: 16px;
+      font-size: 15px;
       opacity: 0;
       transform: translateY(20px);
       transition: 0.3s;
@@ -66,9 +66,10 @@
 
     .menu-bar a:hover {
       background: dodgerblue;
-      box-shadow: 0 0 15px dodgerblue;
+      box-shadow: 0 0 12px dodgerblue;
     }
 
+    /* Glow effect khi click */
     .menu-bar a:active {
       animation: glowClick 0.8s ease-out;
     }
@@ -79,7 +80,7 @@
       100% { box-shadow: 0 0 0px dodgerblue; }
     }
 
-    /* Search box */
+    /* Search */
     .search-box {
       margin: 15px 0;
     }
@@ -129,10 +130,10 @@
       background: rgba(0,0,0,0.6);
       border: none;
       border-radius: 50%;
-      padding: 20px;
+      padding: 18px;
       cursor: pointer;
       color: white;
-      font-size: 26px;
+      font-size: 24px;
       transition: transform 0.75s linear;
       z-index: 999;
     }
@@ -156,54 +157,47 @@
       color: white;
     }
 
-    /* Scroll button */
+    /* Scroll nút */
     .scroll-btn {
       position: fixed;
       right: 20px;
       background: rgba(0,0,0,0.6);
       border: none;
       border-radius: 50%;
-      padding: 20px;
+      padding: 18px;
       cursor: pointer;
       color: white;
       font-size: 22px;
       z-index: 998;
     }
-    .scroll-top { bottom: 180px; }
-    .scroll-down { bottom: 250px; }
+    .scroll-top { bottom: 160px; }
+    .scroll-down { bottom: 220px; }
 
-    /* Gif Matikane */
+    /* Gif Matikane Tannhauser */
     .mambo-gif {
       position: fixed;
       bottom: 20px;
       left: 20px;
-      width: 150px;
+      width: 140px;
       z-index: 997;
       cursor: pointer;
-      filter: drop-shadow(0 0 10px cyan);
-      transition: transform 0.3s, filter 0.3s;
     }
 
-    .mambo-gif:hover {
-      transform: scale(1.1);
-      filter: drop-shadow(0 0 20px deepskyblue);
-    }
-
-    /* Firefly */
+    /* Firefly effect */
     .firefly {
       position: fixed;
       border-radius: 50%;
-      width: 12px;
-      height: 12px;
+      width: 14px;
+      height: 14px;
       background: rgba(200,100,255,0.9);
-      box-shadow: 0 0 15px rgba(200,100,255,1);
+      box-shadow: 0 0 8px rgba(200,100,255,1);
       pointer-events: none;
       animation: fly 1.8s linear forwards;
       z-index: 1000;
     }
-
     @keyframes fly {
       0% { transform: scale(0.7); opacity: 1; }
+      50% { opacity: 0.8; }
       100% { transform: translateY(-100px) scale(0); opacity: 0; }
     }
 
@@ -255,12 +249,10 @@
   <button class="scroll-btn scroll-down">↓</button>
 
   <!-- Gif Matikane -->
-  <img class="mambo-gif" 
-       src="https://media.tenor.com/4thzRUVt7eQAAAAi/pretty-derby-matikane-tannhauser-anime-girl.gif" 
-       alt="Matikane chibi nhảy" id="gifButton">
+  <img class="mambo-gif" src="mambo-matikanetannhauser.webp" alt="Matikane chibi nhảy">
 
   <!-- Nhạc -->
-  <audio id="bgMusic" src="Umapyoi Densetsu - Uma Musume Pretty Derby (128).mp3"></audio>
+  <audio id="mambo-audio" src="Umapyoi Densetsu - Uma Musume Pretty Derby (128).mp3"></audio>
 
   <script>
     // Scroll animation
@@ -308,29 +300,25 @@
       for (let i = 0; i < 4; i++) {
         const firefly = document.createElement("div");
         firefly.className = "firefly";
-        firefly.style.left = `${e.pageX + Math.random() * 30 - 15}px`;
-        firefly.style.top = `${e.pageY + Math.random() * 30 - 15}px`;
+        firefly.style.left = `${e.pageX + Math.random() * 40 - 20}px`;
+        firefly.style.top = `${e.pageY + Math.random() * 40 - 20}px`;
         document.body.appendChild(firefly);
         setTimeout(() => firefly.remove(), 1800);
       }
     });
 
-    // Play music khi click gif
-    const gifBtn = document.getElementById("gifButton");
-    const music = document.getElementById("bgMusic");
-    let isPlaying = false;
-
-    gifBtn.addEventListener("click", () => {
-      if (!isPlaying) {
-        music.play();
-        isPlaying = true;
+    // Gif click phát nhạc
+    const gif = document.querySelector(".mambo-gif");
+    const audio = document.getElementById("mambo-audio");
+    gif.addEventListener("click", () => {
+      if (audio.paused) {
+        audio.play();
       } else {
-        music.pause();
-        music.currentTime = 0;
-        isPlaying = false;
+        audio.pause();
+        audio.currentTime = 0;
       }
     });
   </script>
 </body>
   </html>
-  
+             
