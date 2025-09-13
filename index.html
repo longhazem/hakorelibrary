@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>📖 Thư viện Hakor</title>
+  <title>Thư viện Hakor</title>
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
@@ -11,17 +11,18 @@
       padding: 0;
       height: 100%;
       overflow-x: hidden;
-      background: #111;
       color: white;
     }
 
     /* Parallax background */
     .parallax {
-      background: url("e4b88be78198e9a785-2.jpg") no-repeat center center;
+      background: url("https://preview.redd.it/mambo-v0-73hg0tx6ct4f1.jpeg?width=360&auto=webp&s=43a022bad3727cdcd625ed5a55fa82fec57b5004")
+                  no-repeat center center;
       background-size: cover;
       background-attachment: fixed;
       min-height: 100vh;
       width: 100%;
+      padding-bottom: 100px;
     }
 
     /* Glass effect */
@@ -32,15 +33,61 @@
       border: 1px solid rgba(255, 255, 255, 0.2);
       border-radius: 12px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-      padding: 15px;
+    }
+
+    /* Header */
+    .header {
+      max-width: 800px;
+      margin: 20px auto;
+      padding: 20px;
+      text-align: center;
+      animation: fadeZoom 1s ease forwards;
+    }
+
+    .header h1 {
+      margin: 0 0 15px;
+      font-size: 30px;
+      text-shadow: 0 2px 5px rgba(0,0,0,0.7);
+    }
+
+    /* Search box */
+    .search-box {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .search-box input {
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: none;
+      outline: none;
+      width: 60%;
+      max-width: 400px;
+    }
+
+    .search-box button {
+      padding: 10px 15px;
+      border: none;
+      border-radius: 8px;
+      background: dodgerblue;
+      color: white;
+      cursor: pointer;
+      transition: 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .search-box button:hover {
+      background: deepskyblue;
+      transform: scale(1.05);
     }
 
     /* Menu */
     .menu-wrapper {
-      padding: 10px;
+      padding: 15px 10px;
       margin: 20px auto;
       max-width: 800px;
-      text-align: center;
     }
 
     .menu-bar {
@@ -48,54 +95,27 @@
       flex-wrap: wrap;
       justify-content: center;
       gap: 10px;
-      margin: 15px 0;
+      margin-bottom: 15px;
     }
 
     .menu-bar a {
       color: white;
       text-decoration: none;
-      padding: 12px 22px;
+      padding: 10px 18px;
       background: rgba(0, 0, 0, 0.5);
-      border-radius: 10px;
+      border-radius: 8px;
       font-size: 15px;
       opacity: 0;
       transform: translateY(20px);
       transition: 0.3s;
       position: relative;
+      overflow: hidden;
     }
 
     .menu-bar a:hover {
       background: dodgerblue;
-      box-shadow: 0 0 12px dodgerblue;
-    }
-
-    /* Glow effect khi click */
-    .menu-bar a:active {
-      animation: glowClick 0.8s ease-out;
-    }
-
-    @keyframes glowClick {
-      0% { box-shadow: 0 0 0px dodgerblue; }
-      50% { box-shadow: 0 0 25px deepskyblue; }
-      100% { box-shadow: 0 0 0px dodgerblue; }
-    }
-
-    /* Search */
-    .search-box {
-      margin: 15px 0;
-    }
-
-    /* Nội dung */
-    .content {
-      max-width: 800px;
-      margin: 30px auto;
-      padding: 20px;
-      text-align: center;
-    }
-
-    .content h2, .content p {
-      color: white;
-      text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+      box-shadow: 0 0 10px dodgerblue;
+      transform: scale(1.05);
     }
 
     /* Scroll animation */
@@ -122,136 +142,138 @@
       to   { opacity: 1; transform: translateY(0); }
     }
 
-    /* Nút cài đặt */
+    @keyframes fadeZoom {
+      from { opacity: 0; transform: scale(0.8); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    /* Nội dung */
+    .content {
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 20px;
+      animation: fadeZoom 1.2s ease forwards;
+    }
+
+    .content h2, .content p {
+      text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+    }
+
+    /* Cài đặt (bánh răng) */
     .settings-btn {
       position: fixed;
       bottom: 20px;
       right: 20px;
       background: rgba(0,0,0,0.6);
-      border: none;
       border-radius: 50%;
-      padding: 18px;
-      cursor: pointer;
-      color: white;
+      width: 55px;
+      height: 55px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       font-size: 26px;
-      transition: transform 0.75s linear, box-shadow 0.3s;
-      z-index: 999;
+      color: white;
+      cursor: pointer;
+      transition: transform 0.75s linear;
+      z-index: 1000;
     }
-
-    .settings-btn:hover {
+    .settings-btn.active {
       transform: rotate(180deg);
-      box-shadow: 0 0 20px cyan;
     }
 
-    /* Panel cài đặt */
-    .settings-panel {
+    .settings-menu {
       position: fixed;
-      bottom: 80px;
+      bottom: 90px;
       right: 20px;
-      background: rgba(20,20,20,0.9);
+      width: 220px;
+      background: rgba(0,0,0,0.7);
       padding: 15px;
-      border-radius: 12px;
+      border-radius: 15px;
       display: none;
       flex-direction: column;
       gap: 10px;
-      z-index: 999;
-      color: white;
     }
 
-    /* Scroll nút */
-    .scroll-btn {
-      position: fixed;
-      right: 20px;
-      background: rgba(0,0,0,0.6);
+    .settings-menu button {
+      padding: 10px;
       border: none;
-      border-radius: 50%;
-      padding: 18px;
-      cursor: pointer;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.1);
       color: white;
-      font-size: 24px;
-      z-index: 998;
-      transition: transform 0.2s, box-shadow 0.3s;
-    }
-
-    .scroll-btn:hover {
-      transform: scale(1.1);
-      box-shadow: 0 0 15px violet;
-    }
-
-    .scroll-top { bottom: 100px; }
-    .scroll-down { bottom: 160px; }
-
-    /* Gif Matikane */
-    .mambo-gif {
-      position: fixed;
-      bottom: 20px;
-      left: 20px;
-      width: 130px;
-      border-radius: 50%;
-      border: 3px solid #fff;
-      box-shadow: 0 0 15px rgba(0, 200, 255, 0.8);
       cursor: pointer;
-      transition: transform 0.3s, box-shadow 0.3s;
-      z-index: 997;
+      transition: 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+    .settings-menu button:hover {
+      background: dodgerblue;
+      box-shadow: 0 0 10px dodgerblue;
+      transform: scale(1.05);
     }
 
-    .mambo-gif:hover {
-      transform: scale(1.08);
-      box-shadow: 0 0 25px rgba(0, 200, 255, 1);
+    /* Tắt animation (giữ hover) */
+    body.no-anim * {
+      animation: none !important;
+      transition: none !important;
+    }
+    body.no-anim .menu-bar a:hover,
+    body.no-anim .settings-menu button:hover {
+      transform: scale(1.05);
+      background: dodgerblue;
+      box-shadow: 0 0 10px dodgerblue;
     }
 
-    .mambo-gif.playing {
-      box-shadow: 0 0 25px rgba(255, 50, 200, 1);
-      animation: pulse 1.5s infinite;
-    }
-
-    @keyframes pulse {
-      0% { box-shadow: 0 0 15px rgba(255, 50, 200, 0.6); }
-      50% { box-shadow: 0 0 35px rgba(255, 100, 255, 1); }
-      100% { box-shadow: 0 0 15px rgba(255, 50, 200, 0.6); }
-    }
-
-    /* Firefly effect */
+    /* Hiệu ứng click đom đóm xanh (nút/menu) */
     .firefly {
-      position: fixed;
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      background: dodgerblue;
       border-radius: 50%;
-      width: 14px;
-      height: 14px;
-      background: rgba(200,100,255,0.8);
       pointer-events: none;
-      animation: fly 1.5s linear forwards;
-      z-index: 1000;
-    }
-    @keyframes fly {
-      0% { transform: scale(0.7); opacity: 1; }
-      100% { transform: translateY(-100px) scale(0); opacity: 0; }
+      opacity: 0.8;
+      animation: fireflyAnim 1s ease-out forwards;
     }
 
-    /* Dark mode */
-    body.dark {
-      background: #000;
-      color: #ddd;
+    @keyframes fireflyAnim {
+      from { transform: scale(0.5); opacity: 0.8; }
+      to { transform: scale(3); opacity: 0; }
+    }
+
+    /* Đom đóm tím khi click nền */
+    .firefly-tap {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background: #cc99ff;
+      border-radius: 50%;
+      pointer-events: none;
+      opacity: 0.8;
+      animation: fireflyTapAnim 1.2s ease-out forwards;
+    }
+
+    @keyframes fireflyTapAnim {
+      from { transform: scale(1) translate(0,0); opacity: 0.8; }
+      to { transform: scale(0.5) translate(var(--x), var(--y)); opacity: 0; }
     }
   </style>
 </head>
 <body>
-  <!-- Nền -->
+
+  <!-- Nền parallax -->
   <div class="parallax">
 
-    <!-- Tiêu đề -->
-    <div class="content glass hidden">
-      <h2>📖 Thư viện Hakor</h2>
-      <p>Trang web lưu trữ light novel fan dịch, giao diện đơn giản dễ đọc.</p>
-    </div>
-
-    <!-- Search -->
-    <div class="menu-wrapper glass hidden">
+    <!-- Header -->
+    <header class="glass header">
+      <h1>📖 Thư viện Hakor</h1>
       <div class="search-box">
-        <script async src="https://cse.google.com/cse.js?cx=07e16b36ff38f44d8"></script>
-        <div class="gcse-search"></div>
+        <input type="text" placeholder="🔍 Tìm kiếm light novel..." />
+        <button>Tìm kiếm</button>
       </div>
+    </header>
 
-      <!-- Menu -->
+    <!-- Menu -->
+    <div class="menu-wrapper glass hidden">
       <div class="menu-bar">
         <a href="index.html">🏠 Trang chủ</a>
         <a href="fandich.html">🈶 Fan Dịch</a>
@@ -259,26 +281,19 @@
       </div>
     </div>
 
+    <!-- Nội dung -->
+    <div class="content glass hidden">
+      <h2>Xin chào!</h2>
+      <p>Trang web lưu trữ light novel fan dịch, giao diện đơn giản dễ đọc.</p>
+    </div>
   </div>
 
   <!-- Nút cài đặt -->
-  <button class="settings-btn">⚙️</button>
-
-  <!-- Panel cài đặt -->
-  <div class="settings-panel">
-    <label><input type="checkbox" id="darkToggle"> Chế độ tối</label>
-    <label><input type="checkbox" id="animToggle" checked> Hiệu ứng animation</label>
+  <div class="settings-btn" id="settingsBtn">⚙️</div>
+  <div class="settings-menu glass" id="settingsMenu">
+    <button id="toggleTheme">🌙 Đổi chế độ sáng/tối</button>
+    <button id="toggleAnim">✨ Bật/Tắt animation</button>
   </div>
-
-  <!-- Nút scroll -->
-  <button class="scroll-btn scroll-top">↑</button>
-  <button class="scroll-btn scroll-down">↓</button>
-
-  <!-- Gif Matikane -->
-  <img class="mambo-gif" id="gifBtn" src="mambo-matikanetannhauser.webp" alt="Matikane Tannhauser">
-
-  <!-- Nhạc -->
-  <audio id="bgm" src="Umapyoi Densetsu - Uma Musume Pretty Derby (128).mp3"></audio>
 
   <script>
     // Scroll animation
@@ -296,59 +311,67 @@
 
     document.querySelectorAll('.hidden').forEach(el => observer.observe(el));
 
-    // Settings
-    const settingsBtn = document.querySelector('.settings-btn');
-    const settingsPanel = document.querySelector('.settings-panel');
-    settingsBtn.addEventListener('click', () => {
-      settingsPanel.style.display = settingsPanel.style.display === 'flex' ? 'none' : 'flex';
+    // Settings toggle
+    const settingsBtn = document.getElementById("settingsBtn");
+    const settingsMenu = document.getElementById("settingsMenu");
+
+    settingsBtn.addEventListener("click", () => {
+      settingsBtn.classList.toggle("active");
+      settingsMenu.style.display =
+        settingsMenu.style.display === "flex" ? "none" : "flex";
     });
 
-    // Dark mode toggle
-    document.getElementById("darkToggle").addEventListener("change", (e) => {
-      document.body.classList.toggle("dark", e.target.checked);
+    // Dark/Light mode toggle
+    document.getElementById("toggleTheme").addEventListener("click", () => {
+      document.body.classList.toggle("dark-mode");
     });
 
     // Animation toggle
-    document.getElementById("animToggle").addEventListener("change", (e) => {
-      document.body.classList.toggle("no-anim", !e.target.checked);
+    document.getElementById("toggleAnim").addEventListener("click", () => {
+      document.body.classList.toggle("no-anim");
     });
 
-    // Scroll to top / bottom
-    document.querySelector(".scroll-top").addEventListener("click", () => {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    });
-    document.querySelector(".scroll-down").addEventListener("click", () => {
-      window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+    // Hiệu ứng đom đóm xanh khi click nút/menu
+    function addFireflyEffect(e) {
+      const btn = e.currentTarget;
+      const circle = document.createElement("span");
+      circle.classList.add("firefly");
+
+      const rect = btn.getBoundingClientRect();
+      circle.style.left = (e.clientX - rect.left - 6) + "px";
+      circle.style.top = (e.clientY - rect.top - 6) + "px";
+
+      btn.appendChild(circle);
+      setTimeout(() => circle.remove(), 1000);
+    }
+
+    document.querySelectorAll("button, .menu-bar a").forEach(el => {
+      el.addEventListener("click", addFireflyEffect);
     });
 
-    // Firefly click effect
-    document.addEventListener("click", (e) => {
-      const firefly = document.createElement("div");
-      firefly.className = "firefly";
-      firefly.style.left = `${e.pageX}px`;
-      firefly.style.top = `${e.pageY}px`;
-      document.body.appendChild(firefly);
-      setTimeout(() => firefly.remove(), 1500);
-    });
+    // Hiệu ứng đom đóm tím khi click nền
+    document.body.addEventListener("click", (e) => {
+      if (e.target.closest("button, .menu-bar a, .settings-btn")) return;
 
-    // Gif Matikane phát nhạc
-    const gifBtn = document.getElementById("gifBtn");
-    const bgm = document.getElementById("bgm");
-    let isPlaying = false;
+      for (let i = 0; i < 4; i++) {
+        const dot = document.createElement("span");
+        dot.classList.add("firefly-tap");
 
-    gifBtn.addEventListener("click", () => {
-      if (!isPlaying) {
-        bgm.play();
-        gifBtn.classList.add("playing");
-        isPlaying = true;
-      } else {
-        bgm.pause();
-        bgm.currentTime = 0;
-        gifBtn.classList.remove("playing");
-        isPlaying = false;
+        dot.style.left = e.pageX + "px";
+        dot.style.top = e.pageY + "px";
+
+        const angle = Math.random() * 2 * Math.PI;
+        const distance = 40 + Math.random() * 40;
+        const x = Math.cos(angle) * distance + "px";
+        const y = Math.sin(angle) * distance + "px";
+        dot.style.setProperty("--x", x);
+        dot.style.setProperty("--y", y);
+
+        document.body.appendChild(dot);
+        setTimeout(() => dot.remove(), 1200);
       }
     });
   </script>
 </body>
-        </html>
+  </html>
   
