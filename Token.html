@@ -1,26 +1,35 @@
 <!DOCTYPE html>
-<html>
+<html lang="vi">
 <head>
   <meta charset="UTF-8">
-  <title>Website yêu cầu token</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Xem Token.vf</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    pre {
+      background: #f4f4f4;
+      padding: 10px;
+      border-radius: 8px;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+  </style>
 </head>
 <body>
-  <h2>Nhập token để truy cập</h2>
-  <input type="text" id="tokenInput" placeholder="Nhập token..." />
-  <button onclick="checkToken()">Gửi</button>
-  <p id="result"></p>
+  <h1>Nội dung file Token.vf</h1>
+  <pre id="fileContent">Đang tải...</pre>
 
   <script>
-    async function checkToken(){
-      const token = document.getElementById("tokenInput").value;
-      const res = await fetch('/check?token=' + encodeURIComponent(token));
-      const data = await res.json();
-      if(data.valid){
-        document.getElementById("result").textContent = "Truy cập thành công!";
-      } else {
-        document.getElementById("result").textContent = "Token không hợp lệ!";
-      }
-    }
+    // link raw của Token.vf
+    const fileUrl = 'https://raw.githubusercontent.com/longhazem/hakorelibrary/main/Token.vf';
+    fetch(fileUrl)
+      .then(response => response.text())
+      .then(text => {
+        document.getElementById('fileContent').textContent = text;
+      })
+      .catch(err => {
+        document.getElementById('fileContent').textContent = 'Lỗi tải file: ' + err;
+      });
   </script>
 </body>
 </html>
