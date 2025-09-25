@@ -1,0 +1,27 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Website yêu cầu token</title>
+</head>
+<body>
+  <h2>Nhập token để truy cập</h2>
+  <input type="text" id="tokenInput" placeholder="Nhập token..." />
+  <button onclick="checkToken()">Gửi</button>
+  <p id="result"></p>
+
+  <script>
+    async function checkToken(){
+      const token = document.getElementById("tokenInput").value;
+      const res = await fetch('/check?token=' + encodeURIComponent(token));
+      const data = await res.json();
+      if(data.valid){
+        document.getElementById("result").textContent = "Truy cập thành công!";
+      } else {
+        document.getElementById("result").textContent = "Token không hợp lệ!";
+      }
+    }
+  </script>
+</body>
+</html>
