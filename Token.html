@@ -1,35 +1,94 @@
-<!DOCTYPE html>
-<html lang="vi">
+<!doctype html>
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Xem Token.vf</title>
-  <style>
-    body { font-family: Arial, sans-serif; margin: 20px; }
-    pre {
-      background: #f4f4f4;
-      padding: 10px;
-      border-radius: 8px;
-      white-space: pre-wrap;
-      word-break: break-word;
-    }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Trang khóa - Nhập token</title>
+<style>
+  body{font-family:Arial,Helvetica,sans-serif;margin:0;background:#f3f4f6}
+  #overlay{position:fixed;inset:0;background:rgba(0,0,0,0.82);display:flex;align-items:center;justify-content:center;color:#fff;flex-direction:column;padding:20px;box-sizing:border-box}
+  #card{background:#111;padding:22px;border-radius:12px;max-width:520px;width:100%;box-shadow:0 10px 30px rgba(0,0,0,0.4)}
+  h2{margin:0 0 10px;font-size:20px}
+  input{width:100%;padding:10px;border-radius:8px;border:1px solid #333;background:#0f1720;color:#fff;box-sizing:border-box}
+  button{margin-top:10px;width:100%;padding:10px;border-radius:8px;border:0;background:#06f;color:#fff;font-weight:600;cursor:pointer}
+  #content{display:none;padding:20px}
+  .muted{color:#cbd5e1;font-size:13px;margin-top:8px}
+</style>
 </head>
 <body>
-  <h1>Nội dung file Token.vf</h1>
-  <pre id="fileContent">Đang tải...</pre>
 
-  <script>
-    // link raw của Token.vf
-    const fileUrl = 'https://raw.githubusercontent.com/longhazem/hakorelibrary/main/Token.vf';
-    fetch(fileUrl)
-      .then(response => response.text())
-      .then(text => {
-        document.getElementById('fileContent').textContent = text;
-      })
-      .catch(err => {
-        document.getElementById('fileContent').textContent = 'Lỗi tải file: ' + err;
-      });
-  </script>
+<!-- Popup overlay -->
+<div id="overlay" role="dialog" aria-modal="true">
+  <div id="card">
+    <h2>Nhập token để mở khoá</h2>
+    <input id="tokenInput" type="password" placeholder="Dán token từ bot Discord vào đây">
+    <button id="unlockBtn">Mở khoá</button>
+    <p class="muted">Token được bot gửi riêng cho bạn. Nếu không có, gõ /gettoken trong Discord (bot).</p>
+    <p id="msg" class="muted" style="display:none"></p>
+  </div>
+</div>
+
+<!-- Nội dung thật của trang -->
+<div id="content">
+  <h1>Nội dung bí mật</h1>
+  <p>Nội dung trang chỉ hiển thị khi token hợp lệ.</p>
+</div>
+
+<script>
+/*
+  CHỈNH CHỖ NÀY: đặt URL server của bạn (server phải xử lý POST/GET /check)
+  Ví dụ: const CHECK_URL = "https://your-server.example.com/check"
+*/
+const CHECK_URL = "https://your-server.example.com/check";
+
+const unlockBtn = document.getElementById('unlockBtn');
+const tokenInput = document.getElementById('tokenInput');
+const overlay = document.getElementById('overlay');
+const content = document.getElementById('content');
+const msg = document.getElementById('msg');
+
+async function checkToken(token){
+  // Gửi token tới server. Server phải trả 200 khi hợp lệ, 403 khi ko.
+  try {
+    const body = new URLSearchParams();
+    body.append('token', token);
+
+    const res = await fetch(CHECK_URL, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+      body: body.toString(),
+      credentials: 'omit'
+    });
+
+    if (res.ok) return true;
+    return false;
+  } catch (e) {
+    console.error(e);
+    throw new Error('Không thể kết nối tới server /check');
+  }
+}
+
+unlockBtn.addEventListener('click', async () => {
+  const token = tokenInput.value.trim();
+  if (!token) { msg.style.display='block'; msg.textContent='Nhập token đã nhé.'; return; }
+  msg.style.display='block'; msg.textContent='Đang kiểm tra token...';
+  try {
+    const ok = await checkToken(token);
+    if (ok) {
+      overlay.style.display = 'none';
+      content.style.display = 'block';
+    } else {
+      msg.textContent = 'Token không hợp lệ hoặc đã hết hạn.';
+    }
+  } catch (e) {
+    msg.textContent = e.message;
+  }
+});
+
+// cho phép dán => nhấn Enter để submit
+tokenInput.addEventListener('keydown', (ev) => {
+  if (ev.key === 'Enter') unlockBtn.click();
+});
+</script>
 </body>
 </html>
