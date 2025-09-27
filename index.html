@@ -42,6 +42,14 @@
       padding: 20px;
       text-align: center;
       animation: fadeZoom 1s ease forwards;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .header-left {
+      flex: 1;
+      text-align: left;
     }
 
     .header h1 {
@@ -55,6 +63,8 @@
       display: flex;
       justify-content: center;
       gap: 8px;
+      flex: 1;
+      max-width: 400px;
     }
 
     .search-box input {
@@ -62,8 +72,7 @@
       border-radius: 8px;
       border: none;
       outline: none;
-      width: 60%;
-      max-width: 400px;
+      width: 70%;
     }
 
     .search-box button {
@@ -76,11 +85,37 @@
       transition: 0.3s;
       position: relative;
       overflow: hidden;
+      flex-shrink: 0;
     }
 
     .search-box button:hover {
       background: deepskyblue;
       transform: scale(1.05);
+    }
+
+    /* Login button */
+    .login-btn {
+      padding: 10px 15px;
+      border: none;
+      border-radius: 8px;
+      background: rgba(0, 0, 0, 0.5);
+      color: white;
+      cursor: pointer;
+      transition: 0.3s;
+      position: relative;
+      overflow: hidden;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .login-btn:hover, .logout-btn:hover {
+      background: dodgerblue;
+      box-shadow: 0 0 10px dodgerblue;
+      transform: scale(1.05);
+    }
+
+    .logout-btn {
+      background: rgba(255, 0, 0, 0.6);
     }
 
     /* Menu */
@@ -136,6 +171,7 @@
     .menu-bar.show a:nth-child(1) { animation-delay: 0.2s; }
     .menu-bar.show a:nth-child(2) { animation-delay: 0.4s; }
     .menu-bar.show a:nth-child(3) { animation-delay: 0.6s; }
+    .menu-bar.show a:nth-child(4) { animation-delay: 0.8s; } /* For profile link */
 
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(20px); }
@@ -256,6 +292,77 @@
       from { transform: scale(1) translate(0,0); opacity: 0.8; }
       to { transform: scale(0.5) translate(var(--x), var(--y)); opacity: 0; }
     }
+
+    /* Login Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 2000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.5);
+      backdrop-filter: blur(5px);
+    }
+
+    .modal-content {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      margin: 15% auto;
+      padding: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 12px;
+      width: 90%;
+      max-width: 400px;
+      text-align: center;
+      color: white;
+    }
+
+    .modal-content input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 8px;
+      outline: none;
+      background: rgba(255,255,255,0.2);
+      color: white;
+    }
+
+    .modal-content input::placeholder {
+      color: rgba(255,255,255,0.7);
+    }
+
+    .modal-content button {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 8px;
+      background: dodgerblue;
+      color: white;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .modal-content button:hover {
+      background: deepskyblue;
+      transform: scale(1.05);
+    }
+
+    .close {
+      color: white;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .close:hover {
+      color: dodgerblue;
+    }
   </style>
 </head>
 <body>
@@ -265,19 +372,25 @@
 
     <!-- Header -->
     <header class="glass header">
-      <h1>📖 Thư viện Hakor</h1>
+      <div class="header-left">
+        <h1>📖 Thư viện Hakor</h1>
+      </div>
       <div class="search-box">
         <input type="text" placeholder="🔍 Tìm kiếm light novel..." />
         <button>Tìm kiếm</button>
+      </div>
+      <div id="loginSection">
+        <!-- Nội dung sẽ được JS thay đổi -->
       </div>
     </header>
 
     <!-- Menu -->
     <div class="menu-wrapper glass hidden">
-      <div class="menu-bar">
+      <div class="menu-bar" id="menuBar">
         <a href="index.html">🏠 Trang chủ</a>
         <a href="fandich.html">🈶 Fan Dịch</a>
         <a href="#">📚 Light Novel</a>
+        <!-- Profile link sẽ được thêm nếu đăng nhập -->
       </div>
     </div>
 
@@ -295,7 +408,46 @@
     <button id="toggleAnim">✨ Bật/Tắt animation</button>
   </div>
 
+  <!-- Login Modal -->
+  <div id="loginModal" class="modal">
+    <div class="glass modal-content">
+      <span class="close">&times;</span>
+      <h2>Đăng Nhập</h2>
+      <form id="loginForm">
+        <input type="text" id="username" placeholder="Tên đăng nhập" required>
+        <input type="password" id="password" placeholder="Mật khẩu" required>
+        <button type="submit">Đăng Nhập</button>
+      </form>
+      <p style="font-size: 12px; margin-top: 10px;">Demo: user/test, pass: 123</p>
+    </div>
+  </div>
+
   <script>
+    // Kiểm tra trạng thái đăng nhập khi load trang
+    let isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    let username = localStorage.getItem('username') || '';
+
+    function updateLoginUI() {
+      const loginSection = document.getElementById('loginSection');
+      const menuBar = document.getElementById('menuBar');
+
+      if (isLoggedIn && username) {
+        loginSection.innerHTML = `<a href="#" class="login-btn" id="logoutBtn">👋 Xin chào, ${username}</a> <button class="logout-btn" id="actualLogout">Đăng xuất</button>`;
+        // Thêm liên kết profile vào menu
+        const profileLink = document.createElement('a');
+        profileLink.href = '#';
+        profileLink.textContent = '👤 Tài khoản';
+        menuBar.appendChild(profileLink);
+      } else {
+        loginSection.innerHTML = '<a href="#" class="login-btn" id="loginBtn">🔐 Đăng nhập</a>';
+        // Xóa profile link nếu có
+        const profileLink = menuBar.querySelector('a[href="#"]:last-child');
+        if (profileLink && profileLink.textContent === '👤 Tài khoản') {
+          profileLink.remove();
+        }
+      }
+    }
+
     // Scroll animation
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
@@ -331,47 +483,47 @@
       document.body.classList.toggle("no-anim");
     });
 
-    // Hiệu ứng đom đóm xanh khi click nút/menu
-    function addFireflyEffect(e) {
-      const btn = e.currentTarget;
-      const circle = document.createElement("span");
-      circle.classList.add("firefly");
+    // Login Modal
+    const modal = document.getElementById('loginModal');
+    const loginBtn = document.getElementById('loginBtn');
+    const closeBtn = document.querySelector('.close');
+    const loginForm = document.getElementById('loginForm');
 
-      const rect = btn.getBoundingClientRect();
-      circle.style.left = (e.clientX - rect.left - 6) + "px";
-      circle.style.top = (e.clientY - rect.top - 6) + "px";
-
-      btn.appendChild(circle);
-      setTimeout(() => circle.remove(), 1000);
+    function openModal() {
+      modal.style.display = 'block';
     }
 
-    document.querySelectorAll("button, .menu-bar a").forEach(el => {
-      el.addEventListener("click", addFireflyEffect);
-    });
+    function closeModal() {
+      modal.style.display = 'none';
+    }
 
-    // Hiệu ứng đom đóm tím khi click nền
-    document.body.addEventListener("click", (e) => {
-      if (e.target.closest("button, .menu-bar a, .settings-btn")) return;
+    // Event listeners cho modal
+    if (loginBtn) {
+      loginBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        openModal();
+      });
+    }
 
-      for (let i = 0; i < 4; i++) {
-        const dot = document.createElement("span");
-        dot.classList.add("firefly-tap");
+    closeBtn.addEventListener('click', closeModal);
 
-        dot.style.left = e.pageX + "px";
-        dot.style.top = e.pageY + "px";
-
-        const angle = Math.random() * 2 * Math.PI;
-        const distance = 40 + Math.random() * 40;
-        const x = Math.cos(angle) * distance + "px";
-        const y = Math.sin(angle) * distance + "px";
-        dot.style.setProperty("--x", x);
-        dot.style.setProperty("--y", y);
-
-        document.body.appendChild(dot);
-        setTimeout(() => dot.remove(), 1200);
+    window.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        closeModal();
       }
     });
-  </script>
-</body>
-  </html>
-  
+
+    // Xử lý form đăng nhập (demo đơn giản)
+    loginForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const user = document.getElementById('username').value;
+      const pass = document.getElementById('password').value;
+
+      // Demo: Chỉ cho phép user 'test' với pass '123'
+      if (user === 'test' && pass === '123') {
+        isLoggedIn = true;
+        username = user;
+        localStorage.setItem('isLoggedIn', 'true');
+        localStorage.setItem('username', username);
+        updateLoginUI();
+        closeModal();
