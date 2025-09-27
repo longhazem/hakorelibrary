@@ -9,9 +9,10 @@
       font-family: 'Segoe UI', sans-serif;
       margin: 0;
       padding: 0;
-      height: 100%;
+      height: 100vh;
       overflow-x: hidden;
       color: white;
+      transition: filter 0.3s ease; /* Để brightness mượt */
     }
 
     /* Parallax background */
@@ -22,7 +23,7 @@
       background-attachment: fixed;
       min-height: 100vh;
       width: 100%;
-      padding-bottom: 100px;
+      padding-bottom: 120px; /* Thêm padding cho toolbar */
     }
 
     /* Glass effect */
@@ -42,14 +43,6 @@
       padding: 20px;
       text-align: center;
       animation: fadeZoom 1s ease forwards;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .header-left {
-      flex: 1;
-      text-align: left;
     }
 
     .header h1 {
@@ -58,34 +51,44 @@
       text-shadow: 0 2px 5px rgba(0,0,0,0.7);
     }
 
-    /* Search box */
+    /* Search box - Dài hơn, bo tròn góc */
     .search-box {
       display: flex;
       justify-content: center;
-      gap: 8px;
-      flex: 1;
-      max-width: 400px;
+      gap: 0; /* Không gap để liền mạch */
+      width: 100%;
+      max-width: 600px; /* Dài hơn */
+      margin: 0 auto;
+      border-radius: 25px; /* Bo tròn hơn */
+      overflow: hidden; /* Để bo tròn toàn bộ */
+      background: rgba(0, 0, 0, 0.3);
     }
 
     .search-box input {
-      padding: 10px 12px;
-      border-radius: 8px;
+      padding: 12px 20px;
       border: none;
       outline: none;
-      width: 70%;
+      flex: 1;
+      background: transparent;
+      color: white;
+      font-size: 16px;
+    }
+
+    .search-box input::placeholder {
+      color: rgba(255,255,255,0.7);
     }
 
     .search-box button {
-      padding: 10px 15px;
+      padding: 12px 20px;
       border: none;
-      border-radius: 8px;
       background: dodgerblue;
       color: white;
       cursor: pointer;
       transition: 0.3s;
+      border-radius: 0 25px 25px 0; /* Bo tròn góc phải */
+      flex-shrink: 0;
       position: relative;
       overflow: hidden;
-      flex-shrink: 0;
     }
 
     .search-box button:hover {
@@ -93,7 +96,17 @@
       transform: scale(1.05);
     }
 
-    /* Login button */
+    /* Nút đăng nhập - Fixed top-left (di chuyển từ right sang left) */
+    #loginSection {
+      position: fixed;
+      top: 20px;
+      left: 20px; /* Di chuyển sang trái */
+      z-index: 1000;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
     .login-btn {
       padding: 10px 15px;
       border: none;
@@ -106,6 +119,8 @@
       overflow: hidden;
       text-decoration: none;
       display: inline-block;
+      font-size: 14px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.3);
     }
 
     .login-btn:hover, .logout-btn:hover {
@@ -116,41 +131,10 @@
 
     .logout-btn {
       background: rgba(255, 0, 0, 0.6);
-    }
-
-    /* Menu */
-    .menu-wrapper {
-      padding: 15px 10px;
-      margin: 20px auto;
-      max-width: 800px;
-    }
-
-    .menu-bar {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 10px;
-      margin-bottom: 15px;
-    }
-
-    .menu-bar a {
-      color: white;
-      text-decoration: none;
-      padding: 10px 18px;
-      background: rgba(0, 0, 0, 0.5);
-      border-radius: 8px;
-      font-size: 15px;
-      opacity: 0;
-      transform: translateY(20px);
-      transition: 0.3s;
+      padding: 8px 12px;
+      font-size: 13px;
       position: relative;
       overflow: hidden;
-    }
-
-    .menu-bar a:hover {
-      background: dodgerblue;
-      box-shadow: 0 0 10px dodgerblue;
-      transform: scale(1.05);
     }
 
     /* Scroll animation */
@@ -162,20 +146,6 @@
     .show {
       opacity: 1;
       transform: translateY(0);
-    }
-
-    /* Menu xuất hiện lần lượt */
-    .menu-bar.show a {
-      animation: fadeUp 0.7s forwards;
-    }
-    .menu-bar.show a:nth-child(1) { animation-delay: 0.2s; }
-    .menu-bar.show a:nth-child(2) { animation-delay: 0.4s; }
-    .menu-bar.show a:nth-child(3) { animation-delay: 0.6s; }
-    .menu-bar.show a:nth-child(4) { animation-delay: 0.8s; } /* For profile link */
-
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to   { opacity: 1; transform: translateY(0); }
     }
 
     @keyframes fadeZoom {
@@ -195,88 +165,30 @@
       text-shadow: 0 1px 3px rgba(0,0,0,0.8);
     }
 
-    /* Cài đặt (bánh răng) */
-    .settings-btn {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background: rgba(0,0,0,0.6);
-      border-radius: 50%;
-      width: 55px;
-      height: 55px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 26px;
-      color: white;
-      cursor: pointer;
-      transition: transform 0.75s linear;
-      z-index: 1000;
-    }
-    .settings-btn.active {
-      transform: rotate(180deg);
-    }
-
-    .settings-menu {
-      position: fixed;
-      bottom: 90px;
-      right: 20px;
-      width: 220px;
-      background: rgba(0,0,0,0.7);
-      padding: 15px;
-      border-radius: 15px;
-      display: none;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .settings-menu button {
-      padding: 10px;
-      border: none;
-      border-radius: 10px;
-      background: rgba(255,255,255,0.1);
-      color: white;
-      cursor: pointer;
-      transition: 0.3s;
-      position: relative;
-      overflow: hidden;
-    }
-    .settings-menu button:hover {
-      background: dodgerblue;
-      box-shadow: 0 0 10px dodgerblue;
-      transform: scale(1.05);
-    }
-
     /* Tắt animation (giữ hover) */
     body.no-anim * {
       animation: none !important;
       transition: none !important;
     }
-    body.no-anim .menu-bar a:hover,
-    body.no-anim .settings-menu button:hover {
-      transform: scale(1.05);
-      background: dodgerblue;
-      box-shadow: 0 0 10px dodgerblue;
-    }
 
-    /* Hiệu ứng click đom đóm xanh (nút/menu) */
-    .firefly {
+    /* Hiệu ứng ripple xanh nước khi tap nút (mới) */
+    .ripple {
       position: absolute;
-      width: 12px;
-      height: 12px;
-      background: dodgerblue;
       border-radius: 50%;
+      background: #00bfff; /* Màu xanh nước */
+      transform: scale(0);
+      animation: rippleAnim 0.6s linear;
       pointer-events: none;
-      opacity: 0.8;
-      animation: fireflyAnim 1s ease-out forwards;
     }
 
-    @keyframes fireflyAnim {
-      from { transform: scale(0.5); opacity: 0.8; }
-      to { transform: scale(3); opacity: 0; }
+    @keyframes rippleAnim {
+      to {
+        transform: scale(4);
+        opacity: 0;
+      }
     }
 
-    /* Đom đóm tím khi click nền */
+    /* Đom đóm tím khi click nền (giữ nguyên) */
     .firefly-tap {
       position: absolute;
       width: 10px;
@@ -318,6 +230,8 @@
       max-width: 400px;
       text-align: center;
       color: white;
+      position: relative;
+      overflow: hidden;
     }
 
     .modal-content input {
@@ -345,6 +259,8 @@
       color: white;
       cursor: pointer;
       transition: 0.3s;
+      position: relative;
+      overflow: hidden;
     }
 
     .modal-content button:hover {
@@ -358,10 +274,62 @@
       font-size: 28px;
       font-weight: bold;
       cursor: pointer;
+      position: relative;
+      z-index: 1;
     }
 
     .close:hover {
       color: dodgerblue;
+    }
+
+    /* Toolbar dưới cùng - Fixed bottom */
+    .toolbar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      z-index: 1000;
+      border-top: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .toolbar .brightness-control {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .toolbar label {
+      color: white;
+      font-size: 12px;
+      margin-right: 5px;
+    }
+
+    .toolbar input[type="range"] {
+      width: 100px;
+      margin: 0 10px;
+    }
+
+    .toolbar button {
+      padding: 8px 12px;
+      border: none;
+      border-radius: 8px;
+      background: dodgerblue;
+      color: white;
+      cursor: pointer;
+      transition: 0.3s;
+      font-size: 14px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .toolbar button:hover {
+      background: deepskyblue;
+      transform: scale(1.05);
     }
   </style>
 </head>
@@ -372,40 +340,30 @@
 
     <!-- Header -->
     <header class="glass header">
-      <div class="header-left">
-        <h1>📖 Thư viện Hakor</h1>
-      </div>
+      <h1>📖 Thư viện Hakor</h1>
       <div class="search-box">
         <input type="text" placeholder="🔍 Tìm kiếm light novel..." />
         <button>Tìm kiếm</button>
       </div>
-      <div id="loginSection">
-        <!-- Nội dung sẽ được JS thay đổi -->
-      </div>
     </header>
-
-    <!-- Menu -->
-    <div class="menu-wrapper glass hidden">
-      <div class="menu-bar" id="menuBar">
-        <a href="index.html">🏠 Trang chủ</a>
-        <a href="fandich.html">🈶 Fan Dịch</a>
-        <a href="#">📚 Light Novel</a>
-        <!-- Profile link sẽ được thêm nếu đăng nhập -->
-      </div>
-    </div>
 
     <!-- Nội dung -->
     <div class="content glass hidden">
       <h2>Xin chào!</h2>
       <p>Trang web lưu trữ light novel fan dịch, giao diện đơn giản dễ đọc.</p>
+      <p>Thử kéo xuống để xem nội dung dài hơn...</p>
+      <!-- Thêm nội dung giả để test scroll -->
+      <div style="height: 100vh; margin: 20px 0; background: rgba(0,0,0,0.2); padding: 20px; border-radius: 10px;">
+        <h3>Nội dung dài để test scroll</h3>
+        <p>Đây là phần nội dung dài để bạn có thể test tính năng tự kéo lên/xuống.</p>
+        <p>Scroll thủ công hoặc dùng toolbar dưới cùng nhé!</p>
+      </div>
     </div>
   </div>
 
-  <!-- Nút cài đặt -->
-  <div class="settings-btn" id="settingsBtn">⚙️</div>
-  <div class="settings-menu glass" id="settingsMenu">
-    <button id="toggleTheme">🌙 Đổi chế độ sáng/tối</button>
-    <button id="toggleAnim">✨ Bật/Tắt animation</button>
+  <!-- Nút đăng nhập - Fixed top-left -->
+  <div id="loginSection">
+    <!-- Nội dung sẽ được JS thay đổi -->
   </div>
 
   <!-- Login Modal -->
@@ -422,6 +380,16 @@
     </div>
   </div>
 
+  <!-- Toolbar dưới cùng -->
+  <div class="toolbar">
+    <div class="brightness-control">
+      <label for="brightness">Sáng/Tối:</label>
+      <input type="range" id="brightness" min="0.5" max="1.5" step="0.1" value="1">
+    </div>
+    <button id="scrollTop">⬆️ Lên đầu</button>
+    <button id="scrollBottom">⬇️ Xuống cuối</button>
+  </div>
+
   <script>
     // Kiểm tra trạng thái đăng nhập khi load trang
     let isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
@@ -429,33 +397,19 @@
 
     function updateLoginUI() {
       const loginSection = document.getElementById('loginSection');
-      const menuBar = document.getElementById('menuBar');
 
       if (isLoggedIn && username) {
-        loginSection.innerHTML = `<a href="#" class="login-btn" id="logoutBtn">👋 Xin chào, ${username}</a> <button class="logout-btn" id="actualLogout">Đăng xuất</button>`;
-        // Thêm liên kết profile vào menu
-        const profileLink = document.createElement('a');
-        profileLink.href = '#';
-        profileLink.textContent = '👤 Tài khoản';
-        menuBar.appendChild(profileLink);
+        loginSection.innerHTML = `<span style="color: white; margin-right: 10px;">👋 Xin chào, ${username}</span><button class="logout-btn" id="actualLogout">Đăng xuất</button>`;
       } else {
         loginSection.innerHTML = '<a href="#" class="login-btn" id="loginBtn">🔐 Đăng nhập</a>';
-        // Xóa profile link nếu có
-        const profileLink = menuBar.querySelector('a[href="#"]:last-child');
-        if (profileLink && profileLink.textContent === '👤 Tài khoản') {
-          profileLink.remove();
-        }
       }
     }
 
-    // Scroll animation
+    // Scroll animation (chỉ cho content)
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           entry.target.classList.add("show");
-          if (entry.target.querySelector('.menu-bar')) {
-            entry.target.querySelector('.menu-bar').classList.add("show");
-          }
           observer.unobserve(entry.target);
         }
       });
@@ -463,29 +417,33 @@
 
     document.querySelectorAll('.hidden').forEach(el => observer.observe(el));
 
-    // Settings toggle
-    const settingsBtn = document.getElementById("settingsBtn");
-    const settingsMenu = document.getElementById("settingsMenu");
+    // Hiệu ứng ripple xanh nước khi tap nút
+    function addRippleEffect(e) {
+      const button = e.currentTarget;
+      const ripple = document.createElement("span");
+      const rect = button.getBoundingClientRect();
+      const size = Math.max(rect.width, rect.height);
+      const x = e.clientX - rect.left - size / 2;
+      const y = e.clientY - rect.top - size / 2;
 
-    settingsBtn.addEventListener("click", () => {
-      settingsBtn.classList.toggle("active");
-      settingsMenu.style.display =
-        settingsMenu.style.display === "flex" ? "none" : "flex";
-    });
+      ripple.classList.add("ripple");
+      ripple.style.width = ripple.style.height = size + 'px';
+      ripple.style.left = x + 'px';
+      ripple.style.top = y + 'px';
 
-    // Dark/Light mode toggle
-    document.getElementById("toggleTheme").addEventListener("click", () => {
-      document.body.classList.toggle("dark-mode");
-    });
+      button.appendChild(ripple);
+      setTimeout(() => ripple.remove(), 600);
+    }
 
-    // Animation toggle
-    document.getElementById("toggleAnim").addEventListener("click", () => {
-      document.body.classList.toggle("no-anim");
+    // Event delegation cho ripple effect trên tất cả nút
+    document.addEventListener('click', (e) => {
+      if (e.target.matches('button, .login-btn, .logout-btn, .search-box button, .toolbar button, .modal-content button')) {
+        addRippleEffect(e);
+      }
     });
 
     // Login Modal
     const modal = document.getElementById('loginModal');
-    const loginBtn = document.getElementById('loginBtn');
     const closeBtn = document.querySelector('.close');
     const loginForm = document.getElementById('loginForm');
 
@@ -497,13 +455,20 @@
       modal.style.display = 'none';
     }
 
-    // Event listeners cho modal
-    if (loginBtn) {
-      loginBtn.addEventListener('click', (e) => {
+    // Event delegation cho nút đăng nhập/đăng xuất (vì tạo động)
+    document.addEventListener('click', (e) => {
+      if (e.target.id === 'loginBtn') {
         e.preventDefault();
         openModal();
-      });
-    }
+      } else if (e.target.id === 'actualLogout') {
+        isLoggedIn = false;
+        username = '';
+        localStorage.removeItem('isLoggedIn');
+        localStorage.removeItem('username');
+        updateLoginUI();
+        addRippleEffect(e); // Ripple khi logout
+      }
+    });
 
     closeBtn.addEventListener('click', closeModal);
 
@@ -516,14 +481,7 @@
     // Xử lý form đăng nhập (demo đơn giản)
     loginForm.addEventListener('submit', (e) => {
       e.preventDefault();
-      const user = document.getElementById('username').value;
+      const user = document.getElementById('username').value.trim();
       const pass = document.getElementById('password').value;
 
-      // Demo: Chỉ cho phép user 'test' với pass '123'
-      if (user === 'test' && pass === '123') {
-        isLoggedIn = true;
-        username = user;
-        localStorage.setItem('isLoggedIn', 'true');
-        localStorage.setItem('username', username);
-        updateLoginUI();
-        closeModal();
+      // Demo:
