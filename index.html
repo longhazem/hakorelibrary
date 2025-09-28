@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Thư viện Hakor</title>
+  <!-- Google Sign-In Script (GIS - mới và ổn định) -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
@@ -12,7 +14,7 @@
       height: 100vh;
       overflow-x: hidden;
       color: white;
-      transition: filter 0.3s ease; /* Để brightness mượt */
+      transition: filter 0.3s ease; /* Giữ cho theme toggle */
     }
 
     /* Parallax background */
@@ -23,7 +25,7 @@
       background-attachment: fixed;
       min-height: 100vh;
       width: 100%;
-      padding-bottom: 120px; /* Thêm padding cho toolbar */
+      padding-bottom: 20px; /* Giảm padding vì không còn toolbar */
     }
 
     /* Glass effect */
@@ -96,11 +98,11 @@
       transform: scale(1.05);
     }
 
-    /* Nút đăng nhập - Fixed top-left (di chuyển từ right sang left) */
+    /* Nút đăng nhập và settings - Fixed top-left */
     #loginSection {
       position: fixed;
       top: 20px;
-      left: 20px; /* Di chuyển sang trái */
+      left: 20px;
       z-index: 1000;
       display: flex;
       gap: 10px;
@@ -108,33 +110,79 @@
     }
 
     .login-btn {
-      padding: 10px 15px;
+      width: 50px;
+      height: 50px;
+      background-color: #4285f4; /* Màu xanh Google */
+      border-radius: 50%; /* Hình tròn */
       border: none;
-      border-radius: 8px;
-      background: rgba(0, 0, 0, 0.5);
-      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       cursor: pointer;
-      transition: 0.3s;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+      transition: transform 0.3s ease, background-color 0.3s ease;
+      color: white;
+      font-weight: bold;
+      font-size: 20px;
+      text-decoration: none;
       position: relative;
       overflow: hidden;
-      text-decoration: none;
-      display: inline-block;
-      font-size: 14px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.3);
     }
 
-    .login-btn:hover, .logout-btn:hover {
-      background: dodgerblue;
-      box-shadow: 0 0 10px dodgerblue;
-      transform: scale(1.05);
+    .login-btn:hover {
+      transform: scale(1.1);
+      background-color: #3367d6;
+    }
+
+    .login-btn.logged-in {
+      background-color: #34a853; /* Xanh lá khi logged in */
+      font-size: 14px;
+      width: auto;
+      padding: 10px 15px;
+      border-radius: 20px; /* Không tròn nữa khi hiển thị tên */
+      white-space: nowrap;
+    }
+
+    /* Nút settings - Hình tròn, bên cạnh login */
+    .settings-btn {
+      width: 50px;
+      height: 50px;
+      background-color: #9e9e9e; /* Màu xám bạc */
+      border-radius: 50%;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+      transition: transform 0.3s ease, background-color 0.3s ease;
+      color: white;
+      font-size: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .settings-btn:hover {
+      transform: scale(1.1);
+      background-color: #757575;
     }
 
     .logout-btn {
       background: rgba(255, 0, 0, 0.6);
       padding: 8px 12px;
+      border-radius: 8px;
       font-size: 13px;
+      border: none;
+      color: white;
+      cursor: pointer;
       position: relative;
       overflow: hidden;
+      transition: 0.3s;
+    }
+
+    .logout-btn:hover {
+      background: #d93025;
+      transform: scale(1.05);
     }
 
     /* Scroll animation */
@@ -171,7 +219,7 @@
       transition: none !important;
     }
 
-    /* Hiệu ứng ripple xanh nước khi tap nút (mới) */
+    /* Hiệu ứng ripple xanh nước khi tap nút */
     .ripple {
       position: absolute;
       border-radius: 50%;
@@ -188,24 +236,27 @@
       }
     }
 
-    /* Đom đóm tím khi click nền (giữ nguyên) */
-    .firefly-tap {
+    /* Hiệu ứng hoa anh đào khi tap nền */
+    .cherry-petal {
       position: absolute;
-      width: 10px;
-      height: 10px;
-      background: #cc99ff;
-      border-radius: 50%;
       pointer-events: none;
-      opacity: 0.8;
-      animation: fireflyTapAnim 1.2s ease-out forwards;
+      font-size: 20px; /* Kích thước hoa */
+      animation: cherryFall 3s ease-out forwards;
+      z-index: 999;
     }
 
-    @keyframes fireflyTapAnim {
-      from { transform: scale(1) translate(0,0); opacity: 0.8; }
-      to { transform: scale(0.5) translate(var(--x), var(--y)); opacity: 0; }
+    @keyframes cherryFall {
+      0% {
+        opacity: 1;
+        transform: translateY(0) rotate(0deg) scale(1);
+      }
+      100% {
+        opacity: 0;
+        transform: translateY(200px) translateX(50px) rotate(360deg) scale(0.5); /* Rơi xuống, bay lệch, xoay */
+      }
     }
 
-    /* Login Modal */
+    /* Login Modal (fallback nếu Google fail) */
     .modal {
       display: none;
       position: fixed;
@@ -268,6 +319,29 @@
       transform: scale(1.05);
     }
 
+    /* Settings Modal - Tương tự nhưng nội dung khác */
+    #settingsModal .modal-content {
+      max-width: 350px;
+      text-align: left;
+    }
+
+    #settingsModal .setting-item {
+      margin: 15px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    #settingsModal label {
+      color: white;
+      font-size: 14px;
+    }
+
+    #settingsModal input[type="checkbox"] {
+      width: auto;
+      margin-left: auto;
+    }
+
     .close {
       color: white;
       float: right;
@@ -282,54 +356,63 @@
       color: dodgerblue;
     }
 
-    /* Toolbar dưới cùng - Fixed bottom */
-    .toolbar {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      background: rgba(0, 0, 0, 0.7);
-      padding: 10px 20px;
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      z-index: 1000;
-      border-top: 1px solid rgba(255, 255, 255, 0.2);
+    /* Responsive cho màn hình nhỏ (≤360px) */
+    @media (max-width: 360px) {
+      .login-btn, .settings-btn {
+        width: 40px;
+        height: 40px;
+        top: 5px;
+        left: 5px; /* Adjust cho section */
+        font-size: 16px;
+      }
+
+      .login-btn.logged-in {
+        width: auto;
+        padding: 8px 12px;
+        font-size: 12px;
+        border-radius: 15px;
+      }
+
+      #loginSection {
+        gap: 5px;
+      }
+
+      .header {
+        margin: 60px auto 20px; /* Đẩy header xuống để tránh nút che */
+        padding: 15px;
+      }
+
+      .content {
+        margin: 20px auto;
+        padding: 15px;
+      }
+
+      .search-box {
+        max-width: 100%;
+        flex-direction: column; /* Stack trên mobile nhỏ */
+      }
+
+      .search-box input, .search-box button {
+        border-radius: 0;
+      }
+
+      .search-box button {
+        border-radius: 0 0 25px 25px;
+      }
+
+      .modal-content {
+        width: 95%;
+        margin: 10% auto;
+      }
     }
 
-    .toolbar .brightness-control {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-    }
-
-    .toolbar label {
-      color: white;
-      font-size: 12px;
-      margin-right: 5px;
-    }
-
-    .toolbar input[type="range"] {
-      width: 100px;
-      margin: 0 10px;
-    }
-
-    .toolbar button {
-      padding: 8px 12px;
-      border: none;
-      border-radius: 8px;
-      background: dodgerblue;
-      color: white;
-      cursor: pointer;
-      transition: 0.3s;
-      font-size: 14px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .toolbar button:hover {
-      background: deepskyblue;
-      transform: scale(1.05);
+    /* Màn hình lớn hơn */
+    @media (min-width: 768px) {
+      .login-btn, .settings-btn {
+        width: 60px;
+        height: 60px;
+        font-size: 24px;
+      }
     }
   </style>
 </head>
@@ -351,137 +434,51 @@
     <div class="content glass hidden">
       <h2>Xin chào!</h2>
       <p>Trang web lưu trữ light novel fan dịch, giao diện đơn giản dễ đọc.</p>
-      <p>Thử kéo xuống để xem nội dung dài hơn...</p>
+      <p>Thử tap vào nền để xem hiệu ứng hoa anh đào!</p>
       <!-- Thêm nội dung giả để test scroll -->
       <div style="height: 100vh; margin: 20px 0; background: rgba(0,0,0,0.2); padding: 20px; border-radius: 10px;">
         <h3>Nội dung dài để test scroll</h3>
         <p>Đây là phần nội dung dài để bạn có thể test tính năng tự kéo lên/xuống.</p>
-        <p>Scroll thủ công hoặc dùng toolbar dưới cùng nhé!</p>
+        <p>Scroll thủ công nhé! (Đã xóa nút tự động)</p>
       </div>
     </div>
   </div>
 
-  <!-- Nút đăng nhập - Fixed top-left -->
+  <!-- Nút đăng nhập và settings - Fixed top-left -->
   <div id="loginSection">
-    <!-- Nội dung sẽ được JS thay đổi -->
+    <!-- Nội dung sẽ được JS thay đổi: Ban đầu là nút "G" + settings -->
+    <button class="login-btn" id="googleLoginBtn">G</button>
+    <button class="settings-btn" id="settingsBtn">⚙️</button>
   </div>
 
-  <!-- Login Modal -->
+  <!-- Login Modal (fallback nếu Google fail) -->
   <div id="loginModal" class="modal">
     <div class="glass modal-content">
       <span class="close">&times;</span>
-      <h2>Đăng Nhập</h2>
+      <h2>Đăng Nhập (Fallback)</h2>
       <form id="loginForm">
         <input type="text" id="username" placeholder="Tên đăng nhập" required>
         <input type="password" id="password" placeholder="Mật khẩu" required>
         <button type="submit">Đăng Nhập</button>
       </form>
-      <p style="font-size: 12px; margin-top: 10px;">Demo: user/test, pass: 123</p>
+      <p style="font-size: 12px; margin-top: 10px;">Demo: user/test, pass: 123 (nếu Google không hoạt động)</p>
     </div>
   </div>
 
-  <!-- Toolbar dưới cùng -->
-  <div class="toolbar">
-    <div class="brightness-control">
-      <label for="brightness">Sáng/Tối:</label>
-      <input type="range" id="brightness" min="0.5" max="1.5" step="0.1" value="1">
+  <!-- Settings Modal -->
+  <div id="settingsModal" class="modal">
+    <div class="glass modal-content">
+      <span class="close">&times;</span>
+      <h2>⚙️ Cài Đặt</h2>
+      <div class="setting-item">
+        <label for="noAnim">Tắt animation</label>
+        <input type="checkbox" id="noAnim">
+      </div>
+      <div class="setting-item">
+        <label for="darkMode">Chế độ tối</label>
+        <input type="checkbox" id="darkMode">
+      </div>
+      <!-- Sau này update: Thêm nhiều item hơn ở đây -->
+      <button id="closeSettings" style="width: 100%; margin-top: 20px;">Đóng</button>
     </div>
-    <button id="scrollTop">⬆️ Lên đầu</button>
-    <button id="scrollBottom">⬇️ Xuống cuối</button>
-  </div>
-
-  <script>
-    // Kiểm tra trạng thái đăng nhập khi load trang
-    let isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-    let username = localStorage.getItem('username') || '';
-
-    function updateLoginUI() {
-      const loginSection = document.getElementById('loginSection');
-
-      if (isLoggedIn && username) {
-        loginSection.innerHTML = `<span style="color: white; margin-right: 10px;">👋 Xin chào, ${username}</span><button class="logout-btn" id="actualLogout">Đăng xuất</button>`;
-      } else {
-        loginSection.innerHTML = '<a href="#" class="login-btn" id="loginBtn">🔐 Đăng nhập</a>';
-      }
-    }
-
-    // Scroll animation (chỉ cho content)
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("show");
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.2 });
-
-    document.querySelectorAll('.hidden').forEach(el => observer.observe(el));
-
-    // Hiệu ứng ripple xanh nước khi tap nút
-    function addRippleEffect(e) {
-      const button = e.currentTarget;
-      const ripple = document.createElement("span");
-      const rect = button.getBoundingClientRect();
-      const size = Math.max(rect.width, rect.height);
-      const x = e.clientX - rect.left - size / 2;
-      const y = e.clientY - rect.top - size / 2;
-
-      ripple.classList.add("ripple");
-      ripple.style.width = ripple.style.height = size + 'px';
-      ripple.style.left = x + 'px';
-      ripple.style.top = y + 'px';
-
-      button.appendChild(ripple);
-      setTimeout(() => ripple.remove(), 600);
-    }
-
-    // Event delegation cho ripple effect trên tất cả nút
-    document.addEventListener('click', (e) => {
-      if (e.target.matches('button, .login-btn, .logout-btn, .search-box button, .toolbar button, .modal-content button')) {
-        addRippleEffect(e);
-      }
-    });
-
-    // Login Modal
-    const modal = document.getElementById('loginModal');
-    const closeBtn = document.querySelector('.close');
-    const loginForm = document.getElementById('loginForm');
-
-    function openModal() {
-      modal.style.display = 'block';
-    }
-
-    function closeModal() {
-      modal.style.display = 'none';
-    }
-
-    // Event delegation cho nút đăng nhập/đăng xuất (vì tạo động)
-    document.addEventListener('click', (e) => {
-      if (e.target.id === 'loginBtn') {
-        e.preventDefault();
-        openModal();
-      } else if (e.target.id === 'actualLogout') {
-        isLoggedIn = false;
-        username = '';
-        localStorage.removeItem('isLoggedIn');
-        localStorage.removeItem('username');
-        updateLoginUI();
-        addRippleEffect(e); // Ripple khi logout
-      }
-    });
-
-    closeBtn.addEventListener('click', closeModal);
-
-    window.addEventListener('click', (e) => {
-      if (e.target === modal) {
-        closeModal();
-      }
-    });
-
-    // Xử lý form đăng nhập (demo đơn giản)
-    loginForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const user = document.getElementById('username').value.trim();
-      const pass = document.getElementById('password').value;
-
-      // Demo:
+ 
