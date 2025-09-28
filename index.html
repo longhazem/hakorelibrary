@@ -361,9 +361,13 @@
       .login-btn, .settings-btn {
         width: 40px;
         height: 40px;
-        top: 5px;
-        left: 5px; /* Adjust cho section */
         font-size: 16px;
+      }
+
+      #loginSection {
+        top: 5px;
+        left: 5px;
+        gap: 5px;
       }
 
       .login-btn.logged-in {
@@ -371,10 +375,6 @@
         padding: 8px 12px;
         font-size: 12px;
         border-radius: 15px;
-      }
-
-      #loginSection {
-        gap: 5px;
       }
 
       .header {
@@ -455,13 +455,14 @@
   <div id="loginModal" class="modal">
     <div class="glass modal-content">
       <span class="close">&times;</span>
-      <h2>Đăng Nhập (Fallback)</h2>
+      <h2>Đăng Nhập</h2>
+      <p style="font-size: 12px; color: #ffeb3b;">Google không khả dụng, dùng đăng nhập thường (demo).</p>
       <form id="loginForm">
         <input type="text" id="username" placeholder="Tên đăng nhập" required>
         <input type="password" id="password" placeholder="Mật khẩu" required>
         <button type="submit">Đăng Nhập</button>
       </form>
-      <p style="font-size: 12px; margin-top: 10px;">Demo: user/test, pass: 123 (nếu Google không hoạt động)</p>
+      <p style="font-size: 12px; margin-top: 10px;">Demo: user/test, pass: 123</p>
     </div>
   </div>
 
@@ -481,4 +482,6 @@
       <!-- Sau này update: Thêm nhiều item hơn ở đây -->
       <button id="closeSettings" style="width: 100%; margin-top: 20px;">Đóng</button>
     </div>
- 
+  </div>
+
+  <script
